@@ -2,7 +2,7 @@
   "name": "express-ts",
   "version": "1.0.1",
   "scripts": {
-    "start": "npm run build && node build/index.js",
+    "start": "node build/index.js",
     "build": "rimraf ./build && tsc",
     "dev": "npx nodemon",
     "lint": "eslint . --ext .ts",
