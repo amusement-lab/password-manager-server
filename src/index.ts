@@ -9,7 +9,7 @@ import errorHandling from './middlewares/errorHandler'
 dotenv.config()
 
 const app: Express = express()
-const port = process.env.PORT
+const port = Number(process.env.PORT) || 8080
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -18,6 +18,6 @@ app.use(morgan('dev'))
 app.use(router)
 app.use(errorHandling)
 
-app.listen(port, () => {
-  console.log(`⚡️Server is running at http://localhost:${port}`)
+app.listen(port, '0.0.0.0', () => {
+  console.log(`⚡️Server is running at http://0.0.0.0:${port}`)
 })
