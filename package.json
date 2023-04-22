@@ -2,12 +2,12 @@
   "name": "express-ts",
   "version": "1.0.1",
   "scripts": {
-    "start": "npm run build && node build/index.js",
+    "start": "node build/index.js",
     "build": "rimraf ./build && tsc",
     "dev": "npx nodemon",
     "lint": "eslint . --ext .ts",
     "test": "dotenv -e .env.test -- npx prisma migrate reset && dotenv -e .env.test -- npm run dev",
-    "run-test": "dotenv -e .env.test -- env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/index.ts'"
+    "run-test": "dotenv -e .env.test -- env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/tests/index.ts'"
   },
   "author": "",
   "license": "ISC",
@@ -51,5 +51,8 @@
   "engines": {
     "node": "^18.11.1",
     "npm": "^9.2.0"
+  },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
   }
 }
