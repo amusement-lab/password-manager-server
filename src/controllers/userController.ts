@@ -16,7 +16,7 @@ class User {
     try {
       const { email, key, name } = req.body
 
-      const response = await prisma.user.create({
+      await prisma.user.create({
         data: {
           name,
           email,
@@ -24,7 +24,7 @@ class User {
         },
       })
 
-      res.status(201).json(response)
+      res.status(201).json({ message: 'Register success' })
     } catch (err) {
       next(err)
     }
