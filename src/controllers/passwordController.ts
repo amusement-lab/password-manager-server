@@ -36,15 +36,16 @@ class Password {
 
   static async addPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { title, password } = req.body
-      const response = await prisma.password.create({
+      const { title, password, username } = req.body
+      await prisma.password.create({
         data: {
           title,
+          username,
           password: enc(password, req.loggedUser!.key),
           userId: req.loggedUser!.id,
         },
       })
-      res.status(200).json(response)
+      res.status(200).json({ message: 'Password added successfully' })
     } catch (err) {
       next(err)
     }
