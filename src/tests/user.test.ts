@@ -7,7 +7,7 @@ const expect = chai.expect
 const url = process.env.API_URL!
 
 const testUser = {
-  email: 'user@mail.com',
+  username: 'user@mail.com',
   key: '123456',
   name: 'User',
 }
@@ -30,8 +30,8 @@ describe('Testing user flow', () => {
 
   it('POST /login', async () => {
     const res = await superagent.post(`${url}/login`).send({
-      email: 'user@mail.com',
-      key: '123456',
+      username: testUser.username,
+      key: testUser.key,
     })
 
     expect(res.statusCode).to.equal(200)
@@ -48,8 +48,8 @@ describe('Testing user flow', () => {
     const res = await superagent
       .post(`${url}/change-password`)
       .send({
-        oldKey: '123456',
-        newKey: 'pokemon92',
+        oldKey: testUser.key,
+        newKey: '123456789',
       })
       .auth(token, { type: 'bearer' })
 
@@ -62,8 +62,8 @@ describe('Testing user flow', () => {
     expect(res.body.message).to.be.equal('Key updated')
 
     const loginRes = await superagent.post(`${url}/login`).send({
-      email: 'user@mail.com',
-      key: 'pokemon92',
+      username: testUser.username,
+      key: '123456789',
     })
 
     expect(loginRes.statusCode).to.equal(200)
@@ -76,3 +76,5 @@ describe('Testing user flow', () => {
     token = loginRes.body.token
   })
 })
+
+// TODO: add negative testing for user flow

@@ -14,12 +14,12 @@ class User {
 
   static async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, key, name } = req.body
+      const { username, key, name } = req.body
 
       await prisma.user.create({
         data: {
           name,
-          email,
+          username,
           key: await hash(key),
         },
       })
@@ -32,17 +32,17 @@ class User {
 
   static async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, key } = req.body
+      const { username, key } = req.body
 
       const data = await prisma.user.findUnique({
-        where: { email },
+        where: { username },
       })
       if (data) {
         const valid = await verify(data.key, key)
         if (valid) {
           const loggedUser: LoggedUser = {
             id: data.id,
-            email: data.email,
+            username: data.username,
             key,
           }
           res.status(200).json({ token: generateToken(loggedUser) })
@@ -50,7 +50,7 @@ class User {
           throw { statusCode: 400, message: 'Credential error' }
         }
       } else {
-        throw { statusCode: 404, message: 'Email not registered' }
+        throw { statusCode: 404, message: 'Username not registered' }
       }
     } catch (err) {
       next(err)
