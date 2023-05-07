@@ -7,10 +7,17 @@ const prisma = new PrismaClient()
 
 class Password {
   static async getPassword(req: RequestWithLoggedUser, res: Response) {
-    const passwordData = await prisma.password.findMany({
+    const passwordResponse = await prisma.password.findMany({
       where: {
         userId: req.loggedUser?.id,
       },
+    })
+    const passwordData = passwordResponse.map((password) => {
+      return {
+        id: password.id,
+        title: dec(password.title, req.loggedUser!.key),
+        username: dec(password.username, req.loggedUser!.key),
+      }
     })
     res.status(200).json(passwordData)
   }
@@ -24,7 +31,9 @@ class Password {
       if (data) {
         res.status(200).json({
           ...data,
-          password: dec(data?.password, req.loggedUser!.key),
+          title: dec(data.title, req.loggedUser!.key),
+          username: dec(data.username, req.loggedUser!.key),
+          password: dec(data.password, req.loggedUser!.key),
         })
       } else {
         throw { statusCode: 404, message: 'Data not found' }
@@ -39,8 +48,8 @@ class Password {
       const { title, password, username } = req.body
       await prisma.password.create({
         data: {
-          title,
-          username,
+          title: enc(title, req.loggedUser!.key),
+          username: enc(username, req.loggedUser!.key),
           password: enc(password, req.loggedUser!.key),
           userId: req.loggedUser!.id,
         },

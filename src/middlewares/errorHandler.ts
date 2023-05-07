@@ -5,10 +5,8 @@ import { ErrorHandler } from '../entities/error.entity'
 function errorHandling(
   err: ErrorHandler | Prisma.PrismaClientKnownRequestError,
   _: Request,
-  res: Response,
-  __: NextFunction
+  res: Response
 ) {
-  console.log(err)
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === 'P2002') {
       res.status(400).json({
