@@ -156,6 +156,10 @@ describe('Testing password CRUD', () => {
     expect(res1.body.username).to.be.an('string')
     expect(res1.body.username).to.be.equal('myUser1')
 
+    expect(res1.body).to.have.property('password')
+    expect(res1.body.password).to.be.an('string')
+    expect(res1.body.password).to.be.equal('123456789abc')
+
     expect(res2.statusCode).to.be.equal(200)
 
     expect(res2.body).to.be.an('object')
@@ -171,6 +175,10 @@ describe('Testing password CRUD', () => {
     expect(res2.body.username).to.be.an('string')
     expect(res2.body.username).to.be.equal('myUser2')
 
+    expect(res2.body).to.have.property('password')
+    expect(res2.body.password).to.be.an('string')
+    expect(res2.body.password).to.be.equal('123456789def')
+
     expect(res3.statusCode).to.be.equal(200)
 
     expect(res3.body).to.be.an('object')
@@ -185,6 +193,72 @@ describe('Testing password CRUD', () => {
     expect(res3.body).to.have.property('username')
     expect(res3.body.username).to.be.an('string')
     expect(res3.body.username).to.be.equal('myUser3')
+
+    expect(res3.body).to.have.property('password')
+    expect(res3.body.password).to.be.an('string')
+    expect(res3.body.password).to.be.equal('123456789ghi')
+  })
+
+  it('PUT /password/:id', async () => {
+    const res = await superagent
+      .put(`${url}/password/${testPassData[0].id}`)
+      .send({
+        title: 'web1Edit',
+        username: 'myUser1Edit',
+        password: '123456789abcEdit',
+      })
+      .auth(token, { type: 'bearer' })
+
+    expect(res.statusCode).to.be.equal(200)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.be.equal('Password updated successfully')
+
+    const resDetail = await superagent
+      .get(`${url}/password/${testPassData[0].id}`)
+      .auth(token, { type: 'bearer' })
+
+    expect(resDetail.statusCode).to.be.equal(200)
+
+    expect(resDetail.body).to.be.an('object')
+    expect(resDetail.body).to.have.property('id')
+    expect(resDetail.body.id).to.be.an('string')
+    expect(resDetail.body.id).to.be.equal(testPassData[0].id)
+
+    expect(resDetail.body).to.have.property('title')
+    expect(resDetail.body.title).to.be.an('string')
+    expect(resDetail.body.title).to.be.equal('web1Edit')
+
+    expect(resDetail.body).to.have.property('username')
+    expect(resDetail.body.username).to.be.an('string')
+    expect(resDetail.body.username).to.be.equal('myUser1Edit')
+
+    expect(resDetail.body).to.have.property('password')
+    expect(resDetail.body.password).to.be.an('string')
+    expect(resDetail.body.password).to.be.equal('123456789abcEdit')
+  })
+
+  it('DELETE /password/:id', async () => {
+    const res = await superagent
+      .delete(`${url}/password/${testPassData[0].id}`)
+      .auth(token, { type: 'bearer' })
+
+    expect(res.statusCode).to.be.equal(200)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.be.equal('Password deleted successfully')
+
+    try {
+      await superagent.get(`${url}/password/${testPassData[0].id}`).auth(token, { type: 'bearer' })
+    } catch (error: any) {
+      expect(error.response.statusCode).to.be.equal(404)
+
+      expect(error.response.body).to.be.an('object')
+      expect(error.response.body).to.have.property('message')
+      expect(error.response.body.message).to.be.equal('Data not found')
+    }
   })
 })
 

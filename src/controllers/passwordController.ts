@@ -24,8 +24,9 @@ class Password {
 
   static async detailPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
+      console.log(req.params)
       const { id } = req.params
-      const data = await prisma.password.findFirst({
+      const data = await prisma.password.findUnique({
         where: { id },
       })
       if (data) {
@@ -35,8 +36,6 @@ class Password {
           username: dec(data.username, req.loggedUser!.key),
           password: dec(data.password, req.loggedUser!.key),
         })
-      } else {
-        throw { statusCode: 404, message: 'Data not found' }
       }
     } catch (err) {
       next(err)
@@ -62,18 +61,19 @@ class Password {
 
   static async editPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { title, password } = req.body
+      const { title, username, password } = req.body
       const { id } = req.params
 
-      const response = await prisma.password.update({
+      await prisma.password.update({
         where: { id },
         data: {
-          title,
+          title: enc(title, req.loggedUser!.key),
+          username: enc(username, req.loggedUser!.key),
           password: enc(password, req.loggedUser!.key),
         },
       })
 
-      res.status(200).json(response)
+      res.status(200).json({ message: 'Password updated successfully' })
     } catch (err) {
       next(err)
     }
@@ -83,11 +83,11 @@ class Password {
     try {
       const { id } = req.params
 
-      const response = await prisma.password.delete({
+      await prisma.password.delete({
         where: { id },
       })
 
-      res.status(200).json(response)
+      res.status(200).json({ message: 'Password deleted successfully' })
     } catch (err) {
       next(err)
     }

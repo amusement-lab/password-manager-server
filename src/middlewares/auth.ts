@@ -35,6 +35,8 @@ async function passwordAuthorization(
 
     if (validUserTodo) {
       next()
+    } else if (!findPass) {
+      res.status(404).json({ message: 'Data not found' })
     } else {
       res.status(403).json({ message: 'Forbidden access' })
     }
