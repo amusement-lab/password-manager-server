@@ -7,7 +7,8 @@ const prisma = new PrismaClient()
 
 function authentication(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
   if (req.headers.authorization) {
-    const token = req.headers.authorization
+    // This auth receive `Bearer 1s0m3Tok3nH3re` as API token format
+    const token = req.headers.authorization.split(' ')[1]
     req.loggedUser = decodeToken(token) as LoggedUser
     next()
   } else {
@@ -34,6 +35,8 @@ async function passwordAuthorization(
 
     if (validUserTodo) {
       next()
+    } else if (!findPass) {
+      res.status(404).json({ message: 'Data not found' })
     } else {
       res.status(403).json({ message: 'Forbidden access' })
     }

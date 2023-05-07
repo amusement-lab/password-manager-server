@@ -1,7 +1,7 @@
 import { Request } from 'express'
 
 export interface LoggedUser {
-  email: string
+  username: string
   id: string
   key: string
 }
