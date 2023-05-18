@@ -37,16 +37,19 @@ describe('Testing password CRUD', () => {
         title: 'web1',
         username: 'myUser1',
         password: '123456789abc',
+        key: testUser.key,
       },
       {
         title: 'web2',
         username: 'myUser2',
         password: '123456789def',
+        key: testUser.key,
       },
       {
         title: 'web3',
         username: 'myUser3',
         password: '123456789ghi',
+        key: testUser.key,
       },
     ]
 
@@ -83,7 +86,10 @@ describe('Testing password CRUD', () => {
   })
 
   it('GET /password', async () => {
-    const res = await superagent.get(`${url}/password`).auth(token, { type: 'bearer' })
+    const res = await superagent
+      .get(`${url}/password`)
+      .send({ key: testUser.key })
+      .auth(token, { type: 'bearer' })
 
     expect(res.statusCode).to.be.equal(200)
 
@@ -131,14 +137,17 @@ describe('Testing password CRUD', () => {
   it('GET /password/:id', async () => {
     const res1 = await superagent
       .get(`${url}/password/${testPassData[0].id}`)
+      .send({ key: testUser.key })
       .auth(token, { type: 'bearer' })
 
     const res2 = await superagent
       .get(`${url}/password/${testPassData[1].id}`)
+      .send({ key: testUser.key })
       .auth(token, { type: 'bearer' })
 
     const res3 = await superagent
       .get(`${url}/password/${testPassData[2].id}`)
+      .send({ key: testUser.key })
       .auth(token, { type: 'bearer' })
 
     expect(res1.statusCode).to.be.equal(200)
@@ -206,6 +215,7 @@ describe('Testing password CRUD', () => {
         title: 'web1Edit',
         username: 'myUser1Edit',
         password: '123456789abcEdit',
+        key: testUser.key,
       })
       .auth(token, { type: 'bearer' })
 
@@ -217,6 +227,7 @@ describe('Testing password CRUD', () => {
 
     const resDetail = await superagent
       .get(`${url}/password/${testPassData[0].id}`)
+      .send({ key: testUser.key })
       .auth(token, { type: 'bearer' })
 
     expect(resDetail.statusCode).to.be.equal(200)
