@@ -1,8 +1,6 @@
 # Password Manager
 
-- Typescript = v5.0.4
-- NodeJS = v18.16.0
-- NPM = v9.6.
+Just deploy your own password manager. Just trust yourself. Very simple server for basic password manager. Open for contribute. Your a front end dev? You can contribute to [password manager dashboard](https://github.com/amusement-lab/password-manager-client).
 
 ## Run this project
 
@@ -41,6 +39,12 @@ npx prisma migrate dev
 ```sh
 npm run dev
 ```
+
+## NodeJS Version
+
+- Typescript = v5.0.4
+- NodeJS = v18.16.0
+- NPM = v9.6.6
 
 ## Refrence
 
