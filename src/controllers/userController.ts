@@ -43,7 +43,6 @@ class User {
           const loggedUser: LoggedUser = {
             id: data.id,
             username: data.username,
-            key,
           }
           res.status(200).json({ token: generateToken(loggedUser) })
         } else {

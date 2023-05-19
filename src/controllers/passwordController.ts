@@ -15,8 +15,8 @@ class Password {
     const passwordData = passwordResponse.map((password) => {
       return {
         id: password.id,
-        title: dec(password.title, req.loggedUser!.key),
-        username: dec(password.username, req.loggedUser!.key),
+        title: dec(password.title, req.body.key),
+        username: dec(password.username, req.body.key),
       }
     })
     res.status(200).json(passwordData)
@@ -24,7 +24,6 @@ class Password {
 
   static async detailPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      console.log(req.params)
       const { id } = req.params
       const data = await prisma.password.findUnique({
         where: { id },
@@ -32,9 +31,9 @@ class Password {
       if (data) {
         res.status(200).json({
           ...data,
-          title: dec(data.title, req.loggedUser!.key),
-          username: dec(data.username, req.loggedUser!.key),
-          password: dec(data.password, req.loggedUser!.key),
+          title: dec(data.title, req.body.key),
+          username: dec(data.username, req.body.key),
+          password: dec(data.password, req.body.key),
         })
       }
     } catch (err) {
@@ -44,12 +43,12 @@ class Password {
 
   static async addPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { title, password, username } = req.body
+      const { title, password, username, key } = req.body
       await prisma.password.create({
         data: {
-          title: enc(title, req.loggedUser!.key),
-          username: enc(username, req.loggedUser!.key),
-          password: enc(password, req.loggedUser!.key),
+          title: enc(title, key),
+          username: enc(username, key),
+          password: enc(password, key),
           userId: req.loggedUser!.id,
         },
       })
@@ -61,15 +60,15 @@ class Password {
 
   static async editPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { title, username, password } = req.body
+      const { title, username, password, key } = req.body
       const { id } = req.params
 
       await prisma.password.update({
         where: { id },
         data: {
-          title: enc(title, req.loggedUser!.key),
-          username: enc(username, req.loggedUser!.key),
-          password: enc(password, req.loggedUser!.key),
+          title: enc(title, key),
+          username: enc(username, key),
+          password: enc(password, key),
         },
       })
 

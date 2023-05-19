@@ -6,9 +6,9 @@
   "description": "Just basic password manager",
   "engines": {
     "node": "^18.16.0",
-    "npm": "^9.6.5"
+    "npm": "^9.6.6"
   },
-  "packageManager": "npm@9.6.5",
+  "packageManager": "npm@9.6.6",
   "scripts": {
     "start": "node build/index.js",
     "build": "rimraf ./build && tsc",
@@ -21,7 +21,7 @@
     "ncu:exe": "ncu -u"
   },
   "dependencies": {
-    "@prisma/client": "^4.13.0",
+    "@prisma/client": "^4.14.1",
     "argon2": "^0.30.3",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
@@ -38,10 +38,10 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/mocha": "^10.0.1",
     "@types/morgan": "^1.9.4",
-    "@types/node": "^20.1.0",
+    "@types/node": "^20.2.0",
     "@types/superagent": "^4.1.17",
-    "@typescript-eslint/eslint-plugin": "^5.59.2",
-    "@typescript-eslint/parser": "^5.59.2",
+    "@typescript-eslint/eslint-plugin": "^5.59.6",
+    "@typescript-eslint/parser": "^5.59.6",
     "chai": "^4.3.7",
     "concurrently": "^8.0.1",
     "dotenv-cli": "^7.2.1",
@@ -50,10 +50,10 @@
     "eslint-plugin-prettier": "^4.2.1",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.22",
-    "npm-check-updates": "^16.10.10",
+    "npm-check-updates": "^16.10.12",
     "prettier": "^2.8.8",
-    "prisma": "^4.13.0",
-    "rimraf": "^5.0.0",
+    "prisma": "^4.14.1",
+    "rimraf": "^5.0.1",
     "superagent": "^8.0.9",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
