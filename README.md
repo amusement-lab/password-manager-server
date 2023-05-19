@@ -10,13 +10,13 @@ Just deploy your own password manager. Just trust yourself. Very simple server f
 npm install
 ```
 
-1b. Optional, for use docker compose
+2. Optional, for use docker compose
 
 ```sh
 docker-compose up -d
 ```
 
-2. Setup your `.env`. If you use docker, the settings are in accordance with the config in `docker-compose.yml`
+3. Setup your `.env`. If you use docker, the settings are in accordance with the config in `docker-compose.yml`
 
 ```js
 PORT = 3000
@@ -27,14 +27,14 @@ JWT_SECRET = ''
 DATABASE_URL = ''
 ```
 
-3. Setup the prisma ORM
+4. Setup the prisma ORM
 
 ```sh
 npx prisma generate
 npx prisma migrate dev
 ```
 
-4. Run the project
+5. Run the project
 
 ```sh
 npm run dev
