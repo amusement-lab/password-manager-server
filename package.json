@@ -15,7 +15,7 @@
     "dev": "nodemon",
     "lint": "eslint . --ext .ts",
     "test:env": "dotenv -e .env.test -- npx prisma migrate reset --force && dotenv -e .env.test -- npm run dev",
-    "test:run": "dotenv -e .env.test -- env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/tests/index.ts'",
+    "test:run": "dotenv -e .env.test -- vitest run",
     "test": "concurrently --kill-others \"npm run test:env\" \"wait-on http://localhost:3030 && npm run test:run\"",
     "ncu": "ncu",
     "ncu:exe": "ncu -u"
@@ -31,24 +31,20 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.5",
     "@types/cors": "^2.8.13",
     "@types/crypto-js": "^4.1.1",
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/mocha": "^10.0.1",
     "@types/morgan": "^1.9.4",
     "@types/node": "^20.2.0",
     "@types/superagent": "^4.1.17",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
-    "chai": "^4.3.7",
     "concurrently": "^8.0.1",
     "dotenv-cli": "^7.2.1",
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "mocha": "^10.2.0",
     "nodemon": "^2.0.22",
     "npm-check-updates": "^16.10.12",
     "prettier": "^2.8.8",
@@ -57,6 +53,8 @@
     "superagent": "^8.0.9",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
+    "vite": "^4.4.9",
+    "vitest": "^0.34.4",
     "wait-on": "^7.0.1"
   },
   "prisma": {

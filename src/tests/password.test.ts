@@ -1,13 +1,12 @@
-import * as dotenv from 'dotenv'
+import { describe, it, expect } from 'vitest'
 import superagent from 'superagent'
-import chai from 'chai'
+import * as dotenv from 'dotenv'
 
 dotenv.config()
-const expect = chai.expect
 const url = process.env.API_URL!
 
 const testUser = {
-  username: 'user@mail.com',
+  username: 'user2@mail.com',
   key: '123456789',
   name: 'User',
 }
@@ -15,6 +14,36 @@ let token = ''
 let testPassData: any[] = []
 
 describe('Testing password CRUD', () => {
+  it('POST /register', async () => {
+    const res = await superagent.post(`${url}/register`).send(testUser)
+
+    expect(res.statusCode).to.equal(201)
+
+    expect(res.body).to.be.an('object')
+
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.be.an('string')
+    expect(res.body.message).to.be.equal('Register success')
+
+    expect(res.body).not.to.have.property('key')
+  })
+
+  it('POST /login', async () => {
+    const res = await superagent.post(`${url}/login`).send({
+      username: testUser.username,
+      key: testUser.key,
+    })
+
+    expect(res.statusCode).to.equal(200)
+
+    expect(res.body).to.be.an('object')
+
+    expect(res.body).to.have.property('token')
+    expect(res.body.token).to.be.an('string')
+
+    token = res.body.token
+  })
+
   it('POST /login', async () => {
     const res = await superagent.post(`${url}/login`).send({
       username: testUser.username,
