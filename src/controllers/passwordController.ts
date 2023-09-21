@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import { RequestWithLoggedUser } from '../entities/user.entity'
-import { dec, enc } from '../helpers/ciphers'
+import { encrypt, decrypt } from '../helpers/ciphers'
 
 const prisma = new PrismaClient()
 
@@ -12,13 +12,15 @@ class Password {
         userId: req.loggedUser?.id,
       },
     })
+
     const passwordData = passwordResponse.map((password) => {
       return {
         id: password.id,
-        title: dec(password.title, req.body.key),
-        username: dec(password.username, req.body.key),
+        title: decrypt(password.title, req.body.key),
+        username: decrypt(password.username, req.body.key),
       }
     })
+
     res.status(200).json(passwordData)
   }
 
@@ -31,9 +33,9 @@ class Password {
       if (data) {
         res.status(200).json({
           ...data,
-          title: dec(data.title, req.body.key),
-          username: dec(data.username, req.body.key),
-          password: dec(data.password, req.body.key),
+          title: decrypt(data.title, req.body.key),
+          username: decrypt(data.username, req.body.key),
+          password: decrypt(data.password, req.body.key),
         })
       }
     } catch (err) {
@@ -46,9 +48,9 @@ class Password {
       const { title, password, username, key } = req.body
       await prisma.password.create({
         data: {
-          title: enc(title, key),
-          username: enc(username, key),
-          password: enc(password, key),
+          title: encrypt(title, key),
+          username: encrypt(username, key),
+          password: encrypt(password, key),
           userId: req.loggedUser!.id,
         },
       })
@@ -66,9 +68,9 @@ class Password {
       await prisma.password.update({
         where: { id },
         data: {
-          title: enc(title, key),
-          username: enc(username, key),
-          password: enc(password, key),
+          title: encrypt(title, key),
+          username: encrypt(username, key),
+          password: encrypt(password, key),
         },
       })
 

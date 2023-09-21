@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
-import { hash, verify } from '../helpers/hash'
+import { generateHash, verifyHash } from '../helpers/hash'
 import { generateToken } from '../helpers/jwt'
 import { LoggedUser } from '../entities/user.entity'
 
@@ -20,7 +20,7 @@ class User {
         data: {
           name,
           username,
-          key: await hash(key),
+          key: await generateHash(key),
         },
       })
 
@@ -38,7 +38,7 @@ class User {
         where: { username },
       })
       if (data) {
-        const valid = await verify(data.key, key)
+        const valid = await verifyHash(data.key, key)
         if (valid) {
           const loggedUser: LoggedUser = {
             id: data.id,
