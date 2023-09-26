@@ -1,9 +1,8 @@
-import * as dotenv from 'dotenv'
+import { describe, it, expect } from 'vitest'
 import superagent from 'superagent'
-import chai from 'chai'
+import * as dotenv from 'dotenv'
 
 dotenv.config()
-const expect = chai.expect
 const url = process.env.API_URL!
 
 const testUser = {
