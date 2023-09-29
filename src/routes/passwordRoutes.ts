@@ -11,3 +11,30 @@ router.put('/password/:id', passwordAuthorization, PasswordController.editPasswo
 router.delete('/password/:id', passwordAuthorization, PasswordController.deletePassword)
 
 export default router
+
+/**
+ * @swagger
+ * tags:
+ *   name: Books
+ *   description: The books managing API
+ * /booksss:
+ *   post:
+ *     summary: Create a new book
+ *     tags: [Books]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Book'
+ *     responses:
+ *       200:
+ *         description: The created book.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       500:
+ *         description: Some server error
+ *
+ */
