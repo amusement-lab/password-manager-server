@@ -8,6 +8,9 @@ function errorHandling(
   res: Response,
   __: NextFunction
 ) {
+  // This console.log, for error handler purpose
+  console.log(err)
+
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === 'P2002') {
       res.status(400).json({
@@ -20,6 +23,12 @@ function errorHandling(
         ...err,
         message: 'Data not found',
       })
+    } else if (err.code === 'P2021') {
+      res
+        .status(500)
+        .json({ ...err, message: 'Server database error, system database has not been migrated' })
+    } else {
+      res.status(500).json({ ...err })
     }
   } else {
     res.status(err.statusCode).json({ ...err })

@@ -37,6 +37,7 @@ class User {
       const data = await prisma.user.findUnique({
         where: { username },
       })
+
       if (data) {
         const valid = await verifyHash(data.key, key)
         if (valid) {

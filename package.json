@@ -5,16 +5,16 @@
   "license": "ISC",
   "description": "Just basic password manager",
   "engines": {
-    "npm": "^10.1.0",
-    "node": "^18.18.0"
+    "npm": ">=10",
+    "node": ">=20"
   },
   "packageManager": "npm@9.6.6",
   "scripts": {
-    "start": "node build/index.js",
+    "start": "npm run build && node build/src/index.js",
     "build": "rimraf ./build && tsc",
     "dev": "nodemon",
     "lint": "eslint . --ext .ts",
-    "test:env": "dotenv -e .env.test -- npx prisma migrate reset --force && dotenv -e .env.test -- npm run dev",
+    "test:env": "rimraf ./build && dotenv -e .env.test -- npx prisma migrate reset --force && dotenv -e .env.test -- npm run dev",
     "test:run": "dotenv -e .env.test -- vitest run",
     "test": "concurrently --kill-others \"npm run test:env\" \"wait-on http://localhost:3030 && npm run test:run\"",
     "ncu": "ncu",
@@ -54,6 +54,7 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
+    "vite-tsconfig-paths": "^4.3.1",
     "vitest": "^0.34.5",
     "wait-on": "^7.0.1"
   },
