@@ -6,22 +6,29 @@ import { encrypt, decrypt } from '../helpers/ciphers'
 const prisma = new PrismaClient()
 
 class Password {
-  static async getPassword(req: RequestWithLoggedUser, res: Response) {
-    const passwordResponse = await prisma.password.findMany({
-      where: {
-        userId: req.loggedUser?.id,
-      },
-    })
+  static async getPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
+    try {
+      const passwordResponse = await prisma.vault.findUniqueOrThrow({
+        where: {
+          userId: req.loggedUser!.id,
+        },
+        include: {
+          password: true,
+        },
+      })
 
-    const passwordData = passwordResponse.map((password) => {
-      return {
-        id: password.id,
-        title: decrypt(password.title, req.body.key),
-        username: decrypt(password.username, req.body.key),
-      }
-    })
+      const passwordData = passwordResponse.password.map((password) => {
+        return {
+          id: password.id,
+          title: decrypt(password.title, req.body.key),
+          username: decrypt(password.username, req.body.key),
+        }
+      })
 
-    res.status(200).json(passwordData)
+      res.status(200).json(passwordData)
+    } catch (err) {
+      next(err)
+    }
   }
 
   static async detailPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
@@ -46,12 +53,22 @@ class Password {
   static async addPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
       const { title, password, username, key } = req.body
+
+      const vault = await prisma.vault.findUniqueOrThrow({
+        where: {
+          userId: req.loggedUser!.id,
+        },
+        select: {
+          id: true,
+        },
+      })
+
       await prisma.password.create({
         data: {
           title: encrypt(title, key),
           username: encrypt(username, key),
           password: encrypt(password, key),
-          userId: req.loggedUser!.id,
+          vaultId: vault.id,
         },
       })
       res.status(200).json({ message: 'Password added successfully' })

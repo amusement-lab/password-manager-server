@@ -291,7 +291,9 @@ describe('Testing password CRUD', () => {
     expect(res.body.message).to.be.equal('Password deleted successfully')
 
     try {
-      await superagent.get(`${url}/password/${testPassData[0].id}`).auth(token, { type: 'bearer' })
+      await superagent
+        .delete(`${url}/password/${testPassData[0].id}`)
+        .auth(token, { type: 'bearer' })
     } catch (error: any) {
       expect(error.response.statusCode).to.be.equal(404)
 

@@ -16,11 +16,18 @@ class User {
     try {
       const { username, key, name } = req.body
 
-      await prisma.user.create({
+      const newUser = await prisma.user.create({
         data: {
           name,
           username,
           key: await generateHash(key),
+        },
+      })
+
+      // Once user successfully registered, automatically created with a vault by default
+      await prisma.vault.create({
+        data: {
+          userId: newUser.id,
         },
       })
 

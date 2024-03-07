@@ -24,8 +24,9 @@ class KeyController {
               },
             })
 
-            const allUserPassDatas = await tx.password.findMany({
+            const { password: allUserPassDatas } = await tx.vault.findUniqueOrThrow({
               where: { userId: req.loggedUser?.id },
+              include: { password: true },
             })
 
             allUserPassDatas.forEach(async (data) => {
