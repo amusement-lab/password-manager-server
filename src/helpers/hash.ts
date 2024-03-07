@@ -1,4 +1,4 @@
-import * as argon2 from 'argon2'
+import argon2 from '@node-rs/argon2'
 
 async function generateHash(key: string) {
   return await argon2.hash(key)
