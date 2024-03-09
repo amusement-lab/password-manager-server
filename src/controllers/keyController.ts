@@ -1,8 +1,8 @@
 import { NextFunction, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import { RequestWithLoggedUser } from '../entities/user.entity'
-import { dec, enc } from '../helpers/ciphers'
-import { hash, verify } from '../helpers/hash'
+import { encrypt, decrypt } from '../helpers/ciphers'
+import { generateHash, verifyHash } from '../helpers/hash'
 const prisma = new PrismaClient()
 
 class KeyController {
@@ -13,33 +13,36 @@ class KeyController {
       const foundUser = await prisma.user.findUnique({ where: { id: req.loggedUser?.id } })
 
       if (foundUser) {
-        const valid = await verify(foundUser.key, oldKey)
+        const valid = await verifyHash(foundUser.key, oldKey)
 
         if (valid) {
-          await prisma.user.update({
-            where: { id: req.loggedUser?.id },
-            data: {
-              key: await hash(newKey),
-            },
-          })
-
-          const allUserPassDatas = await prisma.password.findMany({
-            where: { userId: req.loggedUser?.id },
-          })
-
-          allUserPassDatas.forEach(async (data) => {
-            const tempPassword = dec(data.password, oldKey)
-            await prisma.password.update({
-              where: {
-                id: data.id,
-              },
+          return await prisma.$transaction(async (tx) => {
+            await tx.user.update({
+              where: { id: req.loggedUser?.id },
               data: {
-                password: enc(tempPassword, newKey),
+                key: await generateHash(newKey),
               },
             })
-          })
 
-          res.status(200).json({ message: 'Key updated' })
+            const { password: allUserPassDatas } = await tx.vault.findUniqueOrThrow({
+              where: { userId: req.loggedUser?.id },
+              include: { password: true },
+            })
+
+            allUserPassDatas.forEach(async (data) => {
+              const currentPassword = decrypt(data.password, oldKey)
+              await tx.password.update({
+                where: {
+                  id: data.id,
+                },
+                data: {
+                  password: encrypt(currentPassword, newKey),
+                },
+              })
+            })
+
+            res.status(200).json({ message: 'Key updated' })
+          })
         } else {
           throw { statusCode: 400, message: 'Credential invalid' }
         }

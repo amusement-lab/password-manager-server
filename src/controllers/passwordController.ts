@@ -1,25 +1,34 @@
 import { NextFunction, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import { RequestWithLoggedUser } from '../entities/user.entity'
-import { dec, enc } from '../helpers/ciphers'
+import { encrypt, decrypt } from '../helpers/ciphers'
 
 const prisma = new PrismaClient()
 
 class Password {
-  static async getPassword(req: RequestWithLoggedUser, res: Response) {
-    const passwordResponse = await prisma.password.findMany({
-      where: {
-        userId: req.loggedUser?.id,
-      },
-    })
-    const passwordData = passwordResponse.map((password) => {
-      return {
-        id: password.id,
-        title: dec(password.title, req.body.key),
-        username: dec(password.username, req.body.key),
-      }
-    })
-    res.status(200).json(passwordData)
+  static async getPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
+    try {
+      const passwordResponse = await prisma.vault.findUniqueOrThrow({
+        where: {
+          userId: req.loggedUser!.id,
+        },
+        include: {
+          password: true,
+        },
+      })
+
+      const passwordData = passwordResponse.password.map((password) => {
+        return {
+          id: password.id,
+          title: decrypt(password.title, req.body.key),
+          username: decrypt(password.username, req.body.key),
+        }
+      })
+
+      res.status(200).json(passwordData)
+    } catch (err) {
+      next(err)
+    }
   }
 
   static async detailPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
@@ -31,9 +40,9 @@ class Password {
       if (data) {
         res.status(200).json({
           ...data,
-          title: dec(data.title, req.body.key),
-          username: dec(data.username, req.body.key),
-          password: dec(data.password, req.body.key),
+          title: decrypt(data.title, req.body.key),
+          username: decrypt(data.username, req.body.key),
+          password: decrypt(data.password, req.body.key),
         })
       }
     } catch (err) {
@@ -44,12 +53,22 @@ class Password {
   static async addPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
       const { title, password, username, key } = req.body
+
+      const vault = await prisma.vault.findUniqueOrThrow({
+        where: {
+          userId: req.loggedUser!.id,
+        },
+        select: {
+          id: true,
+        },
+      })
+
       await prisma.password.create({
         data: {
-          title: enc(title, key),
-          username: enc(username, key),
-          password: enc(password, key),
-          userId: req.loggedUser!.id,
+          title: encrypt(title, key),
+          username: encrypt(username, key),
+          password: encrypt(password, key),
+          vaultId: vault.id,
         },
       })
       res.status(200).json({ message: 'Password added successfully' })
@@ -66,9 +85,9 @@ class Password {
       await prisma.password.update({
         where: { id },
         data: {
-          title: enc(title, key),
-          username: enc(username, key),
-          password: enc(password, key),
+          title: encrypt(title, key),
+          username: encrypt(username, key),
+          password: encrypt(password, key),
         },
       })
 

@@ -1,11 +1,23 @@
-import CryptoJS from 'crypto-js'
+// Resource for this code
+// https://fireship.io/lessons/node-crypto-examples
+// https://sl.bing.net/fVIcrPcSk1I
 
-function enc(payload: string, secret: string) {
-  return CryptoJS.AES.encrypt(payload, secret).toString()
+import { createCipheriv, createDecipheriv, randomBytes, createHash } from 'crypto'
+
+const iv = randomBytes(16)
+
+function simpleHash(str: string): string {
+  return createHash('sha256').update(String(str)).digest('hex').substring(0, 32)
 }
 
-function dec(ciphertext: string, secret: string) {
-  return CryptoJS.AES.decrypt(ciphertext, secret).toString(CryptoJS.enc.Utf8)
+function encrypt(payload: string, secret: string) {
+  const cipher = createCipheriv('aes256', simpleHash(secret), iv)
+  return cipher.update(payload, 'utf8', 'hex') + cipher.final('hex')
 }
 
-export { enc, dec }
+function decrypt(encryptedMessage: string, secret: string) {
+  const decipher = createDecipheriv('aes256', simpleHash(secret), iv)
+  return decipher.update(encryptedMessage, 'hex', 'utf-8') + decipher.final('utf8')
+}
+
+export { encrypt, decrypt }

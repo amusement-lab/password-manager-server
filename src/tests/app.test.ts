@@ -1,14 +1,14 @@
-import * as dotenv from 'dotenv'
+import { describe, it, expect } from 'vitest'
 import superagent from 'superagent'
-import chai from 'chai'
+import * as dotenv from 'dotenv'
 
 dotenv.config()
-const expect = chai.expect
 const url = process.env.API_URL!
 
 describe('Testing connection to API server', () => {
   it('GET /', async () => {
     const res = await superagent.get(url)
+
     expect(res.statusCode).to.equal(200)
 
     expect(res.body).to.be.an('object')

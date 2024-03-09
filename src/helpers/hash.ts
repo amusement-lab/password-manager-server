@@ -1,11 +1,11 @@
-import * as argon2 from 'argon2'
+import argon2 from '@node-rs/argon2'
 
-async function hash(key: string) {
+async function generateHash(key: string) {
   return await argon2.hash(key)
 }
 
-async function verify(hash: string, key: string) {
+async function verifyHash(hash: string, key: string) {
   return await argon2.verify(hash, key)
 }
 
-export { hash, verify }
+export { generateHash, verifyHash }

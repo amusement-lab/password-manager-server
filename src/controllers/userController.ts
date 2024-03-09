@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
-import { hash, verify } from '../helpers/hash'
+import { generateHash, verifyHash } from '../helpers/hash'
 import { generateToken } from '../helpers/jwt'
 import { LoggedUser } from '../entities/user.entity'
 
@@ -16,11 +16,18 @@ class User {
     try {
       const { username, key, name } = req.body
 
-      await prisma.user.create({
+      const newUser = await prisma.user.create({
         data: {
           name,
           username,
-          key: await hash(key),
+          key: await generateHash(key),
+        },
+      })
+
+      // Once user successfully registered, automatically created with a vault by default
+      await prisma.vault.create({
+        data: {
+          userId: newUser.id,
         },
       })
 
@@ -37,8 +44,9 @@ class User {
       const data = await prisma.user.findUnique({
         where: { username },
       })
+
       if (data) {
-        const valid = await verify(data.key, key)
+        const valid = await verifyHash(data.key, key)
         if (valid) {
           const loggedUser: LoggedUser = {
             id: data.id,
