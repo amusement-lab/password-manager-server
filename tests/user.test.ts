@@ -58,7 +58,7 @@ describe('Testing user flow', () => {
 
     expect(res.body).to.have.property('message')
     expect(res.body.message).to.be.an('string')
-    expect(res.body.message).to.be.equal('Key updated')
+    expect(res.body.message).to.be.equal('Key updated, please logout and login again with new key')
 
     const loginRes = await superagent.post(`${url}/login`).send({
       username: testUser.username,

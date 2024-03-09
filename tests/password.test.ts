@@ -44,22 +44,6 @@ describe('Testing password CRUD', () => {
     token = res.body.token
   })
 
-  // it('POST /login', async () => {
-  //   const res = await superagent.post(`${url}/login`).send({
-  //     username: testUser.username,
-  //     key: testUser.key,
-  //   })
-
-  //   expect(res.statusCode).to.be.equal(200)
-
-  //   expect(res.body).to.be.an('object')
-
-  //   expect(res.body).to.have.property('token')
-  //   expect(res.body.token).to.be.an('string')
-
-  //   token = res.body.token
-  // })
-
   it('POST /password', async () => {
     const passData = [
       {
