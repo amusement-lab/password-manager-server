@@ -24,24 +24,38 @@ class KeyController {
               },
             })
 
-            const { password: allUserPassDatas } = await tx.vault.findUniqueOrThrow({
+            const allUser = await tx.vault.findUniqueOrThrow({
               where: { userId: req.loggedUser?.id },
               include: { password: true },
             })
 
-            allUserPassDatas.forEach(async (data) => {
-              const currentPassword = decrypt(data.password, oldKey)
+            // Password data, please check prisma in Password Model in schema
+            for (let i = 0; i < allUser.password.length; i++) {
+              const currentDecryptedPassData = {
+                title: decrypt(allUser.password[i].title, oldKey),
+                url: allUser.password[i].url ? decrypt(allUser.password[i].url!, oldKey) : null,
+                username: decrypt(allUser.password[i].username, oldKey),
+                password: decrypt(allUser.password[i].password, oldKey),
+              }
+
               await tx.password.update({
                 where: {
-                  id: data.id,
+                  id: allUser.password[i].id,
                 },
                 data: {
-                  password: encrypt(currentPassword, newKey),
+                  title: encrypt(currentDecryptedPassData.title, newKey),
+                  url: currentDecryptedPassData.url
+                    ? encrypt(currentDecryptedPassData.url, newKey)
+                    : null,
+                  username: encrypt(currentDecryptedPassData.username, newKey),
+                  password: encrypt(currentDecryptedPassData.password, newKey),
                 },
               })
-            })
+            }
 
-            res.status(200).json({ message: 'Key updated' })
+            res
+              .status(200)
+              .json({ message: 'Key updated, please logout and login again with new key' })
           })
         } else {
           throw { statusCode: 400, message: 'Credential invalid' }
