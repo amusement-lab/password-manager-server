@@ -34,15 +34,18 @@ class Password {
   static async detailPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
       const { id } = req.params
+
       const data = await prisma.password.findUnique({
         where: { id },
       })
+
       if (data) {
         res.status(200).json({
           ...data,
           title: decrypt(data.title, req.body.key),
           username: decrypt(data.username, req.body.key),
           password: decrypt(data.password, req.body.key),
+          url: data.url ? decrypt(data.url, req.body.key) : null,
         })
       }
     } catch (err) {
@@ -52,7 +55,7 @@ class Password {
 
   static async addPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { title, password, username, key } = req.body
+      const { title, password, username, url, key } = req.body
 
       const vault = await prisma.vault.findUniqueOrThrow({
         where: {
@@ -68,6 +71,7 @@ class Password {
           title: encrypt(title, key),
           username: encrypt(username, key),
           password: encrypt(password, key),
+          url: url ? encrypt(url, key) : null,
           vaultId: vault.id,
         },
       })
@@ -79,7 +83,7 @@ class Password {
 
   static async editPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { title, username, password, key } = req.body
+      const { title, username, password, url, key } = req.body
       const { id } = req.params
 
       await prisma.password.update({
@@ -88,6 +92,7 @@ class Password {
           title: encrypt(title, key),
           username: encrypt(username, key),
           password: encrypt(password, key),
+          url: url ? encrypt(url, key) : null,
         },
       })
 
