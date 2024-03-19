@@ -1,6 +1,12 @@
 import { NextFunction, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
+
 import { RequestWithLoggedUser } from '../entities/user.entity'
+import {
+  GetPasswordsSchema,
+  PasswordSchema,
+  UpsertPasswordSchema,
+} from '../entities/password.entity'
 import { encrypt, decrypt } from '../helpers/ciphers'
 
 const prisma = new PrismaClient()
@@ -25,7 +31,9 @@ class Password {
         }
       })
 
-      res.status(200).json(passwordData)
+      console.log(passwordData)
+
+      res.status(200).json(GetPasswordsSchema.parse(passwordData))
     } catch (err) {
       next(err)
     }
@@ -40,13 +48,15 @@ class Password {
       })
 
       if (data) {
-        res.status(200).json({
-          ...data,
-          title: decrypt(data.title, req.body.key),
-          username: decrypt(data.username, req.body.key),
-          password: decrypt(data.password, req.body.key),
-          url: data.url ? decrypt(data.url, req.body.key) : null,
-        })
+        res.status(200).json(
+          PasswordSchema.parse({
+            ...data,
+            title: decrypt(data.title, req.body.key),
+            username: decrypt(data.username, req.body.key),
+            password: decrypt(data.password, req.body.key),
+            url: data.url ? decrypt(data.url, req.body.key) : null,
+          })
+        )
       }
     } catch (err) {
       next(err)
@@ -55,7 +65,7 @@ class Password {
 
   static async addPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { title, password, username, url, key } = req.body
+      const { title, password, username, url, key } = UpsertPasswordSchema.parse(req.body)
 
       const vault = await prisma.vault.findUniqueOrThrow({
         where: {
@@ -83,7 +93,7 @@ class Password {
 
   static async editPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { title, username, password, url, key } = req.body
+      const { title, password, username, url, key } = UpsertPasswordSchema.parse(req.body)
       const { id } = req.params
 
       await prisma.password.update({
