@@ -47,8 +47,8 @@ describe('Testing user flow', () => {
     const res = await superagent
       .post(`${url}/change-password`)
       .send({
-        oldKey: testUser.key,
-        newKey: '123456789',
+        rawOldKey: testUser.key,
+        rawNewKey: '123456789',
       })
       .auth(token, { type: 'bearer' })
 

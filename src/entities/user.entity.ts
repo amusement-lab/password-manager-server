@@ -27,6 +27,14 @@ export const UserSchema = registry.register(
 
 export const LoginUserSchema = registry.register('LoginUser', UserSchema.omit({ name: true }))
 
+export const ChangeKeySchema = registry.register(
+  'ChangeKey',
+  z.object({
+    rawOldKey: z.string(),
+    rawNewKey: z.string(),
+  })
+)
+
 // register
 registry.registerPath({
   method: 'post',

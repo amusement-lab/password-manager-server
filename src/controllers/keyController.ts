@@ -1,26 +1,30 @@
 import { NextFunction, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
-import { RequestWithLoggedUser } from '../entities/user.entity'
+
+import { ChangeKeySchema, RequestWithLoggedUser } from '../entities/user.entity'
 import { encrypt, decrypt } from '../helpers/ciphers'
-import { generateHash, verifyHash } from '../helpers/hash'
+import { generateHash, generateSimpleHash, verifyHash } from '../helpers/hash'
+
 const prisma = new PrismaClient()
 
 class KeyController {
   static async changeKey(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { oldKey, newKey } = req.body
+      const { rawOldKey, rawNewKey } = ChangeKeySchema.parse(req.body)
+      const oldKey = generateSimpleHash(rawOldKey)
+      const newKey = generateSimpleHash(rawNewKey)
 
       const foundUser = await prisma.user.findUnique({ where: { id: req.loggedUser?.id } })
 
       if (foundUser) {
-        const valid = await verifyHash(foundUser.key, oldKey)
+        const valid = await verifyHash(foundUser.key, rawOldKey)
 
         if (valid) {
           return await prisma.$transaction(async (tx) => {
             await tx.user.update({
               where: { id: req.loggedUser?.id },
               data: {
-                key: await generateHash(newKey),
+                key: await generateHash(rawNewKey),
               },
             })
 
