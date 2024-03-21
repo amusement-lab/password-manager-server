@@ -13,18 +13,18 @@
 
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto'
 
-export function encrypt(payload: string, secret: string) {
+export function encrypt(payload: string, secretKeyWith32ByteLong: string) {
   const iv = randomBytes(16)
-  const cipher = createCipheriv('aes256', secret, iv)
+  const cipher = createCipheriv('aes256', secretKeyWith32ByteLong, iv)
 
   // Store the iv into the end of chipher string, divide by comma, and convert it to base64
   return `${cipher.update(payload, 'utf8', 'hex')}${cipher.final('hex')},${iv.toString('base64')}`
 }
 
-export function decrypt(encryptedMessage: string, secret: string) {
+export function decrypt(encryptedMessage: string, secretKeyWith32ByteLong: string) {
   // Get the iv by splitting the string by comma and converting it to buffer
   const splitEncryptedMessage = encryptedMessage.split(',')
   const iv = Buffer.from(splitEncryptedMessage[1], 'base64')
-  const decipher = createDecipheriv('aes256', secret, iv)
+  const decipher = createDecipheriv('aes256', secretKeyWith32ByteLong, iv)
   return `${decipher.update(splitEncryptedMessage[0], 'hex', 'utf8')}${decipher.final('utf8')}`
 }

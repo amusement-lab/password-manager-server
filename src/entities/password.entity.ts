@@ -1,6 +1,7 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
-import { registry } from '../helpers/zod'
 import { z } from 'zod'
+
+import { registry } from '../helpers/zod'
 
 extendZodWithOpenApi(z)
 
@@ -31,9 +32,7 @@ export const GetPasswordsSchema = registry.register(
 
 export const UpsertPasswordSchema = registry.register(
   'UpsertPassword',
-  PasswordSchema.omit({ id: true, createdAt: true, updatedAt: true }).extend({
-    key: z.string(),
-  })
+  PasswordSchema.omit({ id: true, createdAt: true, updatedAt: true })
 )
 
 // getPassword
@@ -43,7 +42,7 @@ registry.registerPath({
   description: 'Get all user password data',
   responses: {
     200: {
-      description: 'Array with password data.',
+      description: 'Array with password data',
       content: {
         'application/json': {
           schema: z.array(GetPasswordsSchema),
@@ -59,7 +58,7 @@ registry.registerPath({
   path: '/password/:id',
   description: 'Get one user password data by id',
   request: {
-    params: z.object({ id: z.string() }),
+    params: z.object({ id: PasswordSchema.shape.id }),
   },
   responses: {
     200: {
@@ -89,7 +88,7 @@ registry.registerPath({
   },
   responses: {
     201: {
-      description: 'Object with message data.',
+      description: 'Object with message data',
       content: {
         'application/json': {
           schema: z.object({ message: z.string() }),
@@ -116,7 +115,7 @@ registry.registerPath({
   },
   responses: {
     200: {
-      description: 'Object with message data.',
+      description: 'Object with message data',
       content: {
         'application/json': {
           schema: z.object({ message: z.string() }),
@@ -132,11 +131,11 @@ registry.registerPath({
   path: '/password/:id',
   description: 'Delete one password data by id',
   request: {
-    params: z.object({ id: z.string() }),
+    params: z.object({ id: PasswordSchema.shape.id }),
   },
   responses: {
     200: {
-      description: 'Object with message data.',
+      description: 'Object with message data',
       content: {
         'application/json': {
           schema: z.object({ message: z.string() }),
