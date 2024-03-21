@@ -86,3 +86,29 @@ registry.registerPath({
     },
   },
 })
+
+// change key
+registry.registerPath({
+  method: 'post',
+  path: '/change-password',
+  description: 'Change key/password for open the vault',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: ChangeKeySchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Object with message data',
+      content: {
+        'application/json': {
+          schema: z.object({ token: z.string() }),
+        },
+      },
+    },
+  },
+})
