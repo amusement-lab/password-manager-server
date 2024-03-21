@@ -21,7 +21,7 @@ export const UserSchema = registry.register(
   z.object({
     name: z.string(),
     username: z.string(),
-    key: z.string(),
+    key: z.string().min(8, { message: 'Key/Password must be 8 or more characters long' }),
   })
 )
 
@@ -31,7 +31,7 @@ export const ChangeKeySchema = registry.register(
   'ChangeKey',
   z.object({
     rawOldKey: z.string(),
-    rawNewKey: z.string(),
+    rawNewKey: z.string().min(8, { message: 'Key/Password must be 8 or more characters long' }),
   })
 )
 
