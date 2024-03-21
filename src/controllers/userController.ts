@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
-import { generateHash, verifyHash } from '../helpers/hash'
+
+import { generateHash, verifyHash, generateSimpleHash } from '../helpers/hash'
 import { generateToken } from '../helpers/jwt'
-import { LoggedUser } from '../entities/user.entity'
+import { LoggedUser, LoginUserSchema, UserSchema } from '../entities/user.entity'
 
 const prisma = new PrismaClient()
 
@@ -14,7 +15,7 @@ class User {
 
   static async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const { username, key, name } = req.body
+      const { username, key, name } = UserSchema.parse(req.body)
 
       const newUser = await prisma.user.create({
         data: {
@@ -39,7 +40,7 @@ class User {
 
   static async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const { username, key } = req.body
+      const { username, key } = LoginUserSchema.parse(req.body)
 
       const data = await prisma.user.findUnique({
         where: { username },
@@ -51,6 +52,7 @@ class User {
           const loggedUser: LoggedUser = {
             id: data.id,
             username: data.username,
+            hashedKey: generateSimpleHash(key),
           }
           res.status(200).json({ token: generateToken(loggedUser) })
         } else {

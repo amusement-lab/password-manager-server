@@ -7,6 +7,7 @@ import userRoute from './userRoutes'
 import { registry } from '../helpers/zod'
 
 const router = Router()
+
 const generator = new OpenApiGeneratorV31(registry.definitions)
 const openApiDocs = generator.generateDocument({
   openapi: '3.1.0',
