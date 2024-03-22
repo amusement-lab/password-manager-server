@@ -16,6 +16,7 @@ const openApiDocs = generator.generateDocument({
     title: 'Password API',
     description: 'API documentation for Password Manager Apps',
   },
+  security: [{ bearerAuth: [] }], // register with security component name
   servers: [{ url: 'http://localhost:3000' }],
 })
 

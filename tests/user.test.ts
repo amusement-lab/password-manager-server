@@ -7,7 +7,7 @@ const url = process.env.API_URL!
 
 const testUser = {
   username: 'user@mail.com',
-  key: '123456',
+  key: '123456789',
   name: 'User',
 }
 let token = ''
@@ -43,12 +43,14 @@ describe('Testing user flow', () => {
     token = res.body.token
   })
 
-  it('POST /change-password', async () => {
+  it('POST /change-key', async () => {
+    const newKey = '123456789101112'
+
     const res = await superagent
-      .post(`${url}/change-password`)
+      .post(`${url}/change-key`)
       .send({
         rawOldKey: testUser.key,
-        rawNewKey: '123456789',
+        rawNewKey: newKey,
       })
       .auth(token, { type: 'bearer' })
 
@@ -62,7 +64,7 @@ describe('Testing user flow', () => {
 
     const loginRes = await superagent.post(`${url}/login`).send({
       username: testUser.username,
-      key: '123456789',
+      key: newKey,
     })
 
     expect(loginRes.statusCode).to.equal(200)
