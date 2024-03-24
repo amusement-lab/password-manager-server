@@ -1,5 +1,6 @@
 import { NextFunction, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
+
 import { decodeToken } from '../helpers/jwt'
 import { RequestWithLoggedUser, LoggedUser } from '../entities/user.entity'
 

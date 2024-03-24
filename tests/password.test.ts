@@ -50,18 +50,21 @@ describe('Testing password CRUD', () => {
         title: 'web1',
         username: 'myUser1',
         password: '123456789abc',
+        url: 'www.web1.com',
         key: testUser.key,
       },
       {
         title: 'web2',
         username: 'myUser2',
         password: '123456789def',
+        url: 'www.web2.com',
         key: testUser.key,
       },
       {
         title: 'web3',
         username: 'myUser3',
         password: '123456789ghi',
+        url: 'www.web3.com',
         key: testUser.key,
       },
     ]
@@ -182,6 +185,10 @@ describe('Testing password CRUD', () => {
     expect(res1.body.password).to.be.an('string')
     expect(res1.body.password).to.be.equal('123456789abc')
 
+    expect(res1.body).to.have.property('url')
+    expect(res1.body.url).to.be.an('string')
+    expect(res1.body.url).to.be.equal('www.web1.com')
+
     expect(res2.statusCode).to.be.equal(200)
 
     expect(res2.body).to.be.an('object')
@@ -201,6 +208,10 @@ describe('Testing password CRUD', () => {
     expect(res2.body.password).to.be.an('string')
     expect(res2.body.password).to.be.equal('123456789def')
 
+    expect(res2.body).to.have.property('url')
+    expect(res2.body.url).to.be.an('string')
+    expect(res2.body.url).to.be.equal('www.web2.com')
+
     expect(res3.statusCode).to.be.equal(200)
 
     expect(res3.body).to.be.an('object')
@@ -219,6 +230,10 @@ describe('Testing password CRUD', () => {
     expect(res3.body).to.have.property('password')
     expect(res3.body.password).to.be.an('string')
     expect(res3.body.password).to.be.equal('123456789ghi')
+
+    expect(res3.body).to.have.property('url')
+    expect(res3.body.url).to.be.an('string')
+    expect(res3.body.url).to.be.equal('www.web3.com')
   })
 
   it('PUT /password/:id', async () => {
@@ -228,6 +243,7 @@ describe('Testing password CRUD', () => {
         title: 'web1Edit',
         username: 'myUser1Edit',
         password: '123456789abcEdit',
+        url: 'www.web1Edit.com',
         key: testUser.key,
       })
       .auth(token, { type: 'bearer' })
@@ -261,6 +277,10 @@ describe('Testing password CRUD', () => {
     expect(resDetail.body).to.have.property('password')
     expect(resDetail.body.password).to.be.an('string')
     expect(resDetail.body.password).to.be.equal('123456789abcEdit')
+
+    expect(resDetail.body).to.have.property('url')
+    expect(resDetail.body.url).to.be.an('string')
+    expect(resDetail.body.url).to.be.equal('www.web1Edit.com')
   })
 
   it('DELETE /password/:id', async () => {

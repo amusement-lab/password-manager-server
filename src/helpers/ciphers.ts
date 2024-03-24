@@ -3,26 +3,28 @@
 // https://sl.bing.net/fVIcrPcSk1I
 // https://stackoverflow.com/questions/74177757/iam-getting-bad-decrypt-error-in-node-js
 
-import { createCipheriv, createDecipheriv, randomBytes, createHash } from 'crypto'
+/*
+ * The `secret` must be 32 bytes long, because `aes256` algorithm requires it.
+ * But, we cannot forced user to use 32 characters for key.
+ * So, we must convert the raw key into 32 bytes long secret.
+ * The convert proses has been done in login process at generate jwt token
+ * Please check the login process for more detail about this
+ */
 
-function simpleHash(str: string): string {
-  return createHash('sha256').update(String(str)).digest('hex').substring(0, 32)
-}
+import { createCipheriv, createDecipheriv, randomBytes } from 'crypto'
 
-function encrypt(payload: string, secret: string) {
+export function encrypt(payload: string, secretKeyWith32ByteLong: string) {
   const iv = randomBytes(16)
-  const cipher = createCipheriv('aes256', simpleHash(secret), iv)
+  const cipher = createCipheriv('aes256', secretKeyWith32ByteLong, iv)
 
   // Store the iv into the end of chipher string, divide by comma, and convert it to base64
   return `${cipher.update(payload, 'utf8', 'hex')}${cipher.final('hex')},${iv.toString('base64')}`
 }
 
-function decrypt(encryptedMessage: string, secret: string) {
+export function decrypt(encryptedMessage: string, secretKeyWith32ByteLong: string) {
   // Get the iv by splitting the string by comma and converting it to buffer
   const splitEncryptedMessage = encryptedMessage.split(',')
   const iv = Buffer.from(splitEncryptedMessage[1], 'base64')
-  const decipher = createDecipheriv('aes256', simpleHash(secret), iv)
+  const decipher = createDecipheriv('aes256', secretKeyWith32ByteLong, iv)
   return `${decipher.update(splitEncryptedMessage[0], 'hex', 'utf8')}${decipher.final('utf8')}`
 }
-
-export { encrypt, decrypt }
