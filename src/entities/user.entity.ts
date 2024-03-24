@@ -40,6 +40,7 @@ registry.registerPath({
   method: 'post',
   path: '/register',
   description: 'Register user',
+  tags: ['User'],
   request: {
     body: {
       content: {
@@ -66,6 +67,7 @@ registry.registerPath({
   method: 'post',
   path: '/login',
   description: 'Login user',
+  tags: ['User'],
   request: {
     body: {
       content: {
@@ -90,8 +92,9 @@ registry.registerPath({
 // change key
 registry.registerPath({
   method: 'post',
-  path: '/change-password',
+  path: '/change-key',
   description: 'Change key/password for open the vault',
+  tags: ['User'],
   request: {
     body: {
       content: {

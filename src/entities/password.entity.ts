@@ -40,6 +40,7 @@ registry.registerPath({
   method: 'get',
   path: '/password',
   description: 'Get all user password data',
+  tags: ['Password'],
   responses: {
     200: {
       description: 'Array with password data',
@@ -55,8 +56,9 @@ registry.registerPath({
 // detailPassword
 registry.registerPath({
   method: 'get',
-  path: '/password/:id',
+  path: '/password/{id}',
   description: 'Get one user password data by id',
+  tags: ['Password'],
   request: {
     params: z.object({ id: PasswordSchema.shape.id }),
   },
@@ -77,6 +79,7 @@ registry.registerPath({
   method: 'post',
   path: '/password',
   description: 'Create one new password data',
+  tags: ['Password'],
   request: {
     body: {
       content: {
@@ -101,8 +104,9 @@ registry.registerPath({
 // editPassword
 registry.registerPath({
   method: 'put',
-  path: '/password/:id',
+  path: '/password/{id}',
   description: 'Edit one password data by id',
+  tags: ['Password'],
   request: {
     params: z.object({ id: z.string() }),
     body: {
@@ -128,8 +132,9 @@ registry.registerPath({
 // deletePassword
 registry.registerPath({
   method: 'delete',
-  path: '/password/:id',
+  path: '/password/{id}',
   description: 'Delete one password data by id',
+  tags: ['Password'],
   request: {
     params: z.object({ id: PasswordSchema.shape.id }),
   },
