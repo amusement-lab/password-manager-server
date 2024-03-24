@@ -1,8 +1,8 @@
 # Password Manager
 
-Just deploy your own password manager. Just trust yourself. Very simple server for basic password manager. Open for contribute. Your a front end dev? You can contribute to [password manager dashboard](https://github.com/amusement-lab/password-manager-client).
+Just deploy your own password manager. Just trust yourself. Very simple server for basic password manager. Open for contribute. Your a front end dev? You can check and contribute to [password manager client](https://github.com/amusement-lab/password-manager-client).
 
-## Run this project
+## Run This Project
 
 1. Install package
 
@@ -40,13 +40,22 @@ npx prisma migrate dev
 npm run dev
 ```
 
-## NodeJS Version
+5. You can access the open api documention at
 
-- Typescript = v5.0.4
-- NodeJS = v18.16.0
-- NPM = v9.6.6
+```sh
+http://localhost:3000/open-api
+```
+
+## NodeJS Version Environment
+
+- Typescript = v5.4.3
+- NodeJS = v20.11.1
+- NPM = v10.2.4
 
 ## Refrence
 
 - [Basic Encryption & Hashing in Node.js](https://www.zacfukuda.com/blog/basic-crypto-nodejs)
-- [CryptoJS](https://cryptojs.gitbook.io/docs/#ciphers)
+- [NodeJS Native Library for Cryptographic](https://nodejs.org/api/crypto.html)
+- [Basic Example Cryptographic for NodeJS](https://fireship.io/lessons/node-crypto-examples/)
+- [Password Hashing Algorithm](https://appwrite.io/blog/post/password-hashing-algorithms)
+- [5 Common Encryption](https://www.arcserve.com/blog/5-common-encryption-algorithms-and-unbreakables-future)
