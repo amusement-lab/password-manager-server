@@ -40,11 +40,11 @@ npx prisma migrate dev
 npm run dev
 ```
 
-## NodeJS Version
+## NodeJS Version Environment
 
-- Typescript = v5.0.4
-- NodeJS = v18.16.0
-- NPM = v9.6.6
+- Typescript = v5.4.3
+- NodeJS = v20.11.1
+- NPM = v10.2.4
 
 ## Refrence
 
