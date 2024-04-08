@@ -30,6 +30,7 @@ class Password {
           id: password.id,
           title: decrypt(password.title, key),
           username: decrypt(password.username, key),
+          url: password.url ? decrypt(password.url, key) : '',
         }
       })
 
