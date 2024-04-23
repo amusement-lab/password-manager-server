@@ -56,7 +56,7 @@ class Password {
             title: decrypt(data.title, key),
             username: decrypt(data.username, key),
             password: decrypt(data.password, key),
-            url: data.url ? decrypt(data.url, key) : null,
+            url: data.url ? decrypt(data.url, key) : '',
           })
         )
       }
@@ -84,7 +84,7 @@ class Password {
           title: encrypt(title, key),
           username: encrypt(username, key),
           password: encrypt(password, key),
-          url: url ? encrypt(url, key) : null,
+          url: encrypt(url, key),
           vaultId: vault.id,
         },
       })
