@@ -25,7 +25,6 @@ export const GetPasswordsSchema = registry.register(
       createdAt: true,
       updatedAt: true,
       password: true,
-      url: true,
     })
   )
 )

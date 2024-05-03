@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: passmanagerjaya
       POSTGRES_DB: passmanagerDB
     volumes:
-      - './tmp/db:/var/lib/postgresql/data'
+      - pass-manager-db:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
@@ -23,7 +23,7 @@ services:
       POSTGRES_PASSWORD: passmanagerjayaTest
       POSTGRES_DB: passmanagerDBTest
     volumes:
-      - './tmp/db_test:/var/lib/postgresql/data'
+      - pass-manager-db-test:/var/lib/postgresql/data
     ports:
       - 5433:5432
 
@@ -31,9 +31,15 @@ services:
     container_name: password_manager_adminer
     depends_on:
       - db
+      - db-test
     links:
       - db
+      - db-test
     image: adminer
     restart: always
     ports:
       - 8080:8080
+
+volumes:
+  pass-manager-db:
+  pass-manager-db-test:
