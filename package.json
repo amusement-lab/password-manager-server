@@ -1,6 +1,6 @@
 {
   "name": "password-manager",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "author": "Dipadana Putu",
   "license": "ISC",
   "description": "Just basic password manager",
@@ -50,7 +50,7 @@
     "npm-check-updates": "^16.14.20",
     "prettier": "^3.2.5",
     "prisma": "^5.13.0",
-    "rimraf": "^5.0.5",
+    "rimraf": "^5.0.7",
     "superagent": "^9.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
