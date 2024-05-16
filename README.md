@@ -3,6 +3,7 @@
 Just deploy your own password manager. Just trust yourself. Very simple server for basic password manager. Open for contribute. Your a front end dev? You can check and contribute to [password manager client](https://github.com/amusement-lab/password-manager-client).
 
 Some excellent features:
+
 - Open API implementation (doc and ui)
 - Implements many basic cryptographic concepts
 - Applying the Zero Knowledge principle
@@ -60,10 +61,12 @@ http://localhost:3000/open-api
 - NPM = v10.2.4
 
 ### Some further developments, if you want to contribute, here the top priority
-- The error handler still doesn't cover all errors (critpyo and zod errors don't yet) 
+
+- The error handler still doesn't cover all errors (critpyo ~~and zod~~ errors don't yet)
 - For now, you can only save the password, but later you can save bank cards, notes, addresses and documents
 - Test cases are still few, only positive tests, many negative tests are needed to validate the error
 - Currently it's still TSC for the typescript compiler, and then we'll move to `SWC` for faster development and testing
+- Implement export import feature for password backup
 - Implement new id template `[prefix]_[id]`
 
 ## Refrence

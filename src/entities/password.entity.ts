@@ -15,6 +15,7 @@ export const PasswordSchema = registry.register(
     username: z.string(),
     password: z.string(),
     url: z.string(),
+    note: z.string(),
   })
 )
 

@@ -35,6 +35,7 @@ model Password {
   url       String?
   username  String
   password  String
+  note      String?
   vault     Vault?   @relation(fields: [vaultId], references: [id])
   vaultId   String?
 }
