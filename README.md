@@ -69,6 +69,14 @@ http://localhost:3000/open-api
 - Implement export import feature for password backup
 - Implement new id template `[prefix]_[id]`
 
+## Notice
+
+Before upgrading dependencies, make sure the versions of the dependencies in the list below are compatible with each other. If they are not compatible, the program will fail to compile and crash (type of error).
+
+- eslint
+- @types/express
+- express
+
 ## Refrence
 
 - [Basic Encryption & Hashing in Node.js](https://www.zacfukuda.com/blog/basic-crypto-nodejs)
