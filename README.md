@@ -71,7 +71,8 @@ http://localhost:3000/open-api
 
 ## Notice
 
-Before upgrading dependencies, make sure the versions of the dependencies in the list below are compatible with each other. If they are not compatible, the program will fail to compile and crash (type of error).
+Before upgrading dependencies, make sure the versions of the dependencies in the list below are compatible with each other.
+If they are not compatible, the program will fail to compile and crash (type of error).
 
 - eslint
 - @types/express
