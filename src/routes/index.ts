@@ -1,4 +1,4 @@
-import { Router, Response, Request } from 'express'
+import { Router, Request, Response } from 'express'
 import swaggerUi from 'swagger-ui-express'
 import { OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi'
 
@@ -6,7 +6,7 @@ import passwordRoute from './passwordRoutes'
 import userRoute from './userRoutes'
 import { registry } from '../helpers/zod'
 
-const router = Router()
+const router: Router = Router()
 
 const generator = new OpenApiGeneratorV31(registry.definitions)
 const openApiDocs = generator.generateDocument({
@@ -27,7 +27,7 @@ router.get('/', (_: Request, res: Response) => {
 router.use('/open-api', swaggerUi.serve)
 router.get('/open-api', swaggerUi.setup(openApiDocs))
 router.get('/open-api-json', (_: Request, res: Response) => {
-  return res.json(openApiDocs)
+  res.json(openApiDocs)
 })
 
 router.use(userRoute)

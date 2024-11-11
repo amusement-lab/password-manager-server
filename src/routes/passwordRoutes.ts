@@ -2,7 +2,8 @@ import { Router } from 'express'
 import PasswordController from '../controllers/passwordController'
 import { authentication, passwordAuthorization } from '../middlewares/auth'
 
-const router = Router()
+const router: Router = Router()
+
 router.use(authentication)
 router.get('/password', PasswordController.getPassword)
 router.post('/password', PasswordController.addPassword)
