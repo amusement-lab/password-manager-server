@@ -15,7 +15,7 @@ Some excellent features:
 1. Install package
 
 ```js
-npm install
+pnpm install
 ```
 
 2. Optional, for use docker compose
@@ -38,14 +38,14 @@ DATABASE_URL = ''
 4. Setup the prisma ORM
 
 ```sh
-npx prisma generate
-npx prisma migrate dev
+pnpm dlx prisma generate
+pnpm dlx prisma migrate dev
 ```
 
 5. Run the project
 
 ```sh
-npm run dev
+pnpm dev
 ```
 
 5. You can access the open api documention at
@@ -56,11 +56,11 @@ http://localhost:3000/open-api
 
 ## NodeJS Version Environment
 
-- Typescript = v5.4.3
-- NodeJS = v20.11.1
-- NPM = v10.2.4
+- Typescript = v5.6.3
+- NodeJS = v22.11.1
+- PNPM = v9.12.3
 
-### Some further developments, if you want to contribute, here the top priority
+## Some further developments, if you want to contribute, here the top priority
 
 - The error handler still doesn't cover all errors (critpyo ~~and zod~~ errors don't yet)
 - For now, you can only save the password, but later you can save bank cards, notes, addresses and documents
@@ -69,7 +69,7 @@ http://localhost:3000/open-api
 - Implement export import feature for password backup
 - Implement new id template `[prefix]_[id]`
 
-## Notice
+### Notice
 
 Before upgrading dependencies, make sure the versions of the dependencies in the list below are compatible with each other.
 If they are not compatible, the program will fail to compile and crash (type of error).
