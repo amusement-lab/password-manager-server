@@ -57,8 +57,8 @@ http://localhost:3000/open-api
 ## NodeJS Version Environment
 
 - Typescript = v5.6.3
-- NodeJS = v22.11.1
-- PNPM = v9.12.3
+- NodeJS = v22.11.0
+- PNPM = v9.13.2
 
 ## Some further developments, if you want to contribute, here the top priority
 
