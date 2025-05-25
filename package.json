@@ -1,12 +1,12 @@
 {
   "name": "password-manager",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "author": "Dipadana Putu",
   "license": "ISC",
   "description": "Just basic password manager",
   "engines": {
-    "pnpm": ">=9",
-    "node": ">=10"
+    "pnpm": ">=10",
+    "node": ">=22"
   },
   "packageManager": "pnpm@10.11.0",
   "scripts": {
