@@ -1,9 +1,12 @@
 import { NextFunction, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
+import { z } from 'zod'
 
 import { ChangeKeySchema, RequestWithLoggedUser } from '../entities/user.entity'
 import { encrypt, decrypt } from '../helpers/ciphers'
 import { generateHash, generateSimpleHash, verifyHash } from '../helpers/hash'
+import { PasswordSchema } from 'entities/password.entity'
+import { C } from 'vitest/dist/chunks/environment.d.Dmw5ulng'
 
 const prisma = new PrismaClient()
 
@@ -35,25 +38,35 @@ class KeyController {
 
             // Password data, please check prisma in Password Model in schema
             for (let i = 0; i < allUser.password.length; i++) {
-              const currentDecryptedPassData = {
+
+              type VaultData = z.infer<typeof PasswordSchema>
+              type CurrentDecryptedPassData = Omit<VaultData, 'id' | 'createdAt' | 'updatedAt'>
+
+              const currentDecryptedPassData: CurrentDecryptedPassData = {
                 title: decrypt(allUser.password[i].title, oldKey),
-                url: allUser.password[i].url ? decrypt(allUser.password[i].url!, oldKey) : null,
                 username: decrypt(allUser.password[i].username, oldKey),
                 password: decrypt(allUser.password[i].password, oldKey),
+                url: allUser.password[i].url ? decrypt(allUser.password[i].url!, oldKey) : '',
+                note: allUser.password[i].note ? decrypt(allUser.password[i].note!, oldKey) : ''
+              }
+
+              const updatedEcryptedPassData: CurrentDecryptedPassData = {
+                title: encrypt(currentDecryptedPassData.title, newKey),
+                username: encrypt(currentDecryptedPassData.username, newKey),
+                password: encrypt(currentDecryptedPassData.password, newKey),
+                url: currentDecryptedPassData.url
+                  ? encrypt(currentDecryptedPassData.url, newKey)
+                  : '',
+                note: currentDecryptedPassData.note
+                  ? encrypt(currentDecryptedPassData.note, newKey)
+                  : '',
               }
 
               await tx.password.update({
                 where: {
                   id: allUser.password[i].id,
                 },
-                data: {
-                  title: encrypt(currentDecryptedPassData.title, newKey),
-                  url: currentDecryptedPassData.url
-                    ? encrypt(currentDecryptedPassData.url, newKey)
-                    : null,
-                  username: encrypt(currentDecryptedPassData.username, newKey),
-                  password: encrypt(currentDecryptedPassData.password, newKey),
-                },
+                data: updatedEcryptedPassData,
               })
             }
 
