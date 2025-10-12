@@ -6,7 +6,6 @@ import { ChangeKeySchema, RequestWithLoggedUser } from '../entities/user.entity'
 import { encrypt, decrypt } from '../helpers/ciphers'
 import { generateHash, generateSimpleHash, verifyHash } from '../helpers/hash'
 import { PasswordSchema } from 'entities/password.entity'
-import { C } from 'vitest/dist/chunks/environment.d.Dmw5ulng'
 
 const prisma = new PrismaClient()
 
