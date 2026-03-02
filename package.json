@@ -14,7 +14,7 @@
     "build": "rimraf ./build && tsc",
     "dev": "nodemon",
     "lint": "eslint . --ext .ts",
-    "test:env": "rimraf ./build && dotenv -e .env.test -- pnpm dlx prisma migrate reset --force && dotenv -e .env.test -- pnpm dev",
+    "test:env": "rimraf ./build && dotenv -e .env.test -- pnpm prisma migrate reset --force && dotenv -e .env.test -- pnpm dev",
     "test:run": "dotenv -e .env.test -- vitest run",
     "test": "concurrently --kill-others \"pnpm test:env\" \"wait-on http://localhost:3030 && pnpm test:run\"",
     "ncu": "ncu",
@@ -22,7 +22,7 @@
     "ncu:i": "ncu -i",
     "build:swc": "rimraf ./build && swc src --out-dir build",
     "start:swc": "node build/src/index.js",
-    "test:env:swc": "rimraf ./build && dotenv -e .env.test -- pnpm dlx prisma migrate reset --force && dotenv -e .env.test -- pnpm build:swc && dotenv -e .env.test -- pnpm start:swc",
+    "test:env:swc": "rimraf ./build && dotenv -e .env.test -- pnpm prisma migrate reset --force && dotenv -e .env.test -- pnpm build:swc && dotenv -e .env.test -- pnpm start:swc",
     "test:swc": "concurrently --kill-others \"pnpm test:env:swc\" \"wait-on http://localhost:3030 && pnpm test:run\""
   },
   "dependencies": {

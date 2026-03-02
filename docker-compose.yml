@@ -1,38 +1,39 @@
-version: '3.9'
-
 services:
   db:
     container_name: password_manager_pg
-    image: postgres:15.1-alpine
+    image: postgres:18-alpine
     restart: always
-    environment:
-      POSTGRES_USER: passmanager
-      POSTGRES_PASSWORD: passmanagerjaya
-      POSTGRES_DB: passmanagerDB
+    env_file:
+      - .env
     volumes:
       - pass-manager-db:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   db-test:
     container_name: password_manager_pg_test
-    image: postgres:15.1-alpine
-    restart: always
-    environment:
-      POSTGRES_USER: passmanagerTest
-      POSTGRES_PASSWORD: passmanagerjayaTest
-      POSTGRES_DB: passmanagerDBTest
+    image: postgres:18-alpine
+    restart: unless-stopped
+    env_file:
+      - .env.test
     volumes:
       - pass-manager-db-test:/var/lib/postgresql/data
     ports:
       - 5433:5432
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   adminer:
     container_name: password_manager_adminer
     depends_on:
-      - db
-      - db-test
-    links:
       - db
       - db-test
     image: adminer
