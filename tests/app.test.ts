@@ -1,8 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import superagent from 'superagent'
-import * as dotenv from 'dotenv'
 
-dotenv.config()
 const url = process.env.API_URL!
 
 describe('Testing connection to API server', () => {

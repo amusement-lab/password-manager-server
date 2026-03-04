@@ -1,12 +1,12 @@
+import { loadEnvFile } from 'process'
 import express, { Express } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
-import dotenv from 'dotenv'
 
 import router from './routes'
 import errorHandling from './middlewares/errorHandler'
 
-dotenv.config()
+loadEnvFile();
 
 const app: Express = express()
 const port = Number(process.env.PORT) || 8080

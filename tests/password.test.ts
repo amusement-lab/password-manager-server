@@ -1,8 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import superagent from 'superagent'
-import * as dotenv from 'dotenv'
 
-dotenv.config()
 const url = process.env.API_URL!
 
 const testUser = {
@@ -107,7 +105,6 @@ describe('Testing password CRUD', () => {
   it('GET /password', async () => {
     const res = await superagent
       .get(`${url}/password`)
-      .send({ key: testUser.key })
       .auth(token, { type: 'bearer' })
 
     expect(res.statusCode).to.be.equal(200)
@@ -168,17 +165,14 @@ describe('Testing password CRUD', () => {
   it('GET /password/:id', async () => {
     const res1 = await superagent
       .get(`${url}/password/${testPassData[0].id}`)
-      .send({ key: testUser.key })
       .auth(token, { type: 'bearer' })
 
     const res2 = await superagent
       .get(`${url}/password/${testPassData[1].id}`)
-      .send({ key: testUser.key })
       .auth(token, { type: 'bearer' })
 
     const res3 = await superagent
       .get(`${url}/password/${testPassData[2].id}`)
-      .send({ key: testUser.key })
       .auth(token, { type: 'bearer' })
 
     expect(res1.statusCode).to.be.equal(200)
@@ -259,7 +253,6 @@ describe('Testing password CRUD', () => {
         username: 'myUser1Edit',
         password: '123456789abcEdit',
         url: 'www.web1Edit.com',
-        key: testUser.key,
         note: 'Test ini berisi note ujicoba untuk update note field',
       })
       .auth(token, { type: 'bearer' })
@@ -272,7 +265,6 @@ describe('Testing password CRUD', () => {
 
     const resDetail = await superagent
       .get(`${url}/password/${testPassData[0].id}`)
-      .send({ key: testUser.key })
       .auth(token, { type: 'bearer' })
 
     expect(resDetail.statusCode).to.be.equal(200)
