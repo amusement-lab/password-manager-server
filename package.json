@@ -18,13 +18,7 @@
     "test:env": "node --env-file=.env.test node_modules/prisma/build/index.js migrate reset --force && tsx --env-file=.env.test src/index.ts",
     "test:run": "vitest run",
     "test": "concurrently --kill-others \"pnpm test:env\" \"wait-on http://localhost:3030 && pnpm test:run\"",
-    "ncu": "ncu",
-    "ncu:u": "ncu -u",
-    "ncu:i": "ncu -i",
-    "build:swc": "rimraf ./build && swc src --out-dir build",
-    "start:swc": "node build/src/index.js",
-    "test:env:swc": "rimraf ./build && dotenv -e .env.test -- pnpm prisma migrate reset --force && dotenv -e .env.test -- pnpm build:swc && dotenv -e .env.test -- pnpm start:swc",
-    "test:swc": "concurrently --kill-others \"pnpm test:env:swc\" \"wait-on http://localhost:3030 && pnpm test:run\""
+    "ncu": "ncu"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^8.1.0",
@@ -39,8 +33,6 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@swc/cli": "^0.7.8",
-    "@swc/core": "^1.13.5",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",

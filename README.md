@@ -65,7 +65,6 @@ http://localhost:3000/open-api
 - The error handler still doesn't cover all errors (critpyo ~~and zod~~ errors don't yet)
 - For now, you can only save the password, but later you can save bank cards, notes, addresses and documents
 - Test cases are still few, only positive tests, many negative tests are needed to validate the error
-- Currently it's still TSC for the typescript compiler, and then we'll move to `SWC` for faster development and testing
 - Implement export import feature for password backup
 - Implement new id template `[prefix]_[id]`
 
