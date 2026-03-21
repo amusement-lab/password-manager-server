@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { ChangeKeySchema, RequestWithLoggedUser } from '../entities/user.entity'
 import { encrypt, decrypt } from '../helpers/ciphers'
 import { generateHash, generateSimpleHash, verifyHash } from '../helpers/hash'
-import { PasswordSchema } from 'entities/password.entity'
+import { PasswordSchema } from '../entities/password.entity'
 
 const prisma = new PrismaClient()
 

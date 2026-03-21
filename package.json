@@ -10,14 +10,14 @@
   },
   "packageManager": "pnpm@10.18.2",
   "scripts": {
-    "start": "pnpm run build && node build/src/index.js",
+    "start": "pnpm run build && node build/index.js",
     "build": "rimraf ./build && tsc",
     "typecheck": "tsc --noEmit",
     "dev": "tsx watch src/index.ts",
     "lint": "eslint . --ext .ts",
-    "test:env": "node --env-file=.env.test node_modules/prisma/build/index.js migrate reset --force && tsx --env-file=.env.test src/index.ts",
+    "test:migrate": "dotenv -e .env.test -- prisma migrate reset --force",
     "test:run": "vitest run",
-    "test": "concurrently --kill-others \"pnpm test:env\" \"wait-on http://localhost:3030 && pnpm test:run\"",
+    "test": "concurrently --kill-others --success first \"pnpm test:migrate && dotenv -e .env.test -- tsx src/index.ts\" \"wait-on http://localhost:3030 && pnpm test:run\"",
     "ncu": "ncu"
   },
   "dependencies": {
