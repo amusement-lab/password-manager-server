@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "es2022",
     "module": "commonjs",
-    "moduleResolution": "node",
     "allowJs": true,
     "strict": true,
     "esModuleInterop": true,
@@ -13,11 +12,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./build",
-    "rootDir": "./src",
-    "baseUrl": ".",
-    "paths": {
-      "~~/*": ["src/*"]
-    }
+    "rootDir": "./src"
   },
   "include": ["src"]
 }
