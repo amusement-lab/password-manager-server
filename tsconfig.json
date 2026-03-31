@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2022",
-    "module": "commonjs",
+    "target": "ES2023",
+    "module": "ESNext",
     "allowJs": true,
     "strict": true,
     "esModuleInterop": true,
