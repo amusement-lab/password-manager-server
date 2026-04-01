@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { Prisma } from '@prisma/client'
+import { Prisma } from '../prisma/generated/client'
 import { ErrorHandler } from '../entities/error.entity'
 import { ZodError } from 'zod'
 

@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../prisma'
 
 import { RequestWithLoggedUser } from '../entities/user.entity'
 import {
@@ -8,8 +8,6 @@ import {
   UpsertPasswordSchema,
 } from '../entities/password.entity'
 import { encrypt, decrypt } from '../helpers/ciphers'
-
-const prisma = new PrismaClient()
 
 class Password {
   static async getPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {

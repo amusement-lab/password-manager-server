@@ -1,10 +1,8 @@
 import { NextFunction, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../prisma'
 
 import { decodeToken } from '../helpers/jwt'
 import { RequestWithLoggedUser, LoggedUser } from '../entities/user.entity'
-
-const prisma = new PrismaClient()
 
 function authentication(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
   if (req.headers.authorization) {

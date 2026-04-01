@@ -38,8 +38,8 @@ DATABASE_URL = ''
 4. Setup the prisma ORM
 
 ```sh
-pnpm prisma generate
 pnpm prisma migrate dev
+pnpm prisma generate
 ```
 
 5. Run the project

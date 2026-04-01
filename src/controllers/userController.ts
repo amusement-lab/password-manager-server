@@ -1,11 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../prisma'
 
 import { generateHash, verifyHash, generateSimpleHash } from '../helpers/hash'
 import { generateToken } from '../helpers/jwt'
 import { LoggedUser, LoginUserSchema, UserSchema } from '../entities/user.entity'
-
-const prisma = new PrismaClient()
 
 class User {
   static async getUser(_: Request, res: Response) {

@@ -8,11 +8,9 @@ export default defineConfig({
   },
   env: {
     node: true,
-    es2022: true,
   },
   rules: {
     "no-console": "warn",
-    "no-unused-vars": "error",
     "typescript/no-unused-vars": "error",
     "typescript/no-explicit-any": "warn",
   },
@@ -20,7 +18,7 @@ export default defineConfig({
   overrides: [
     {
       files: ["tests/**/*.ts"],
-      plugins: ["vitest"],
+      plugins: ["typescript", "vitest"],
       rules: {
         "vitest/no-disabled-tests": "warn",
         "vitest/no-focused-tests": "error",
