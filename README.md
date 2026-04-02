@@ -18,7 +18,7 @@ Some excellent features:
 pnpm install
 ```
 
-2. Optional, for use docker compose
+2. (Optional) Start Docker containers for the database
 
 ```sh
 docker-compose up -d
@@ -27,12 +27,8 @@ docker-compose up -d
 3. Setup your `.env`. If you use docker, the settings are in accordance with the config in `docker-compose.yml`
 
 ```js
-PORT = 3000
-JWT_SECRET = ''
-// This project use prisma as ORM.
-// Please see this doc for your refrence database
-// https://www.prisma.io/docs/concepts/database-connectors
-DATABASE_URL = ''
+cp .env.example .env
+cp .env.test.example .env.test // for test environment
 ```
 
 4. Setup the prisma ORM
@@ -54,11 +50,11 @@ pnpm dev
 http://localhost:3000/open-api
 ```
 
-## NodeJS Version Environment
+## NodeJS Version Environment for development
 
-- Typescript = v5.9.3
-- NodeJS = v24.14.0
-- PNPM = v10.18.0
+- Typescript = v6.0.2
+- NodeJS = v24.14.0 or v22.22.2
+- PNPM = v10.33.0
 
 ## Some further developments, if you want to contribute, here the top priority
 
@@ -67,14 +63,6 @@ http://localhost:3000/open-api
 - Test cases are still few, only positive tests, many negative tests are needed to validate the error
 - Implement export import feature for password backup
 - Implement new id template `[prefix]_[id]`
-
-### Notice
-
-Before upgrading dependencies, make sure the versions of the dependencies in the list below are compatible with each other.
-If they are not compatible, the program will fail to compile and crash (type of error).
-
-- @types/express
-- express
 
 ## Refrence
 
