@@ -1,4 +1,5 @@
 {
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "trailingComma": "es5",
   "semi": false,
   "singleQuote": true,
@@ -6,5 +7,7 @@
   "quoteProps": "consistent",
   "bracketSpacing": true,
   "arrowParens": "always",
-  "printWidth": 100
+  "printWidth": 100,
+  "sortPackageJson": false,
+  "ignorePatterns": ["build"]
 }

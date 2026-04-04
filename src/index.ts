@@ -1,4 +1,4 @@
-import "dotenv/config";
+import 'dotenv/config'
 import express, { Express } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'

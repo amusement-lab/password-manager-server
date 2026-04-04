@@ -103,9 +103,7 @@ describe('Testing password CRUD', () => {
   })
 
   it('GET /password', async () => {
-    const res = await superagent
-      .get(`${url}/password`)
-      .auth(token, { type: 'bearer' })
+    const res = await superagent.get(`${url}/password`).auth(token, { type: 'bearer' })
 
     expect(res.statusCode).to.be.equal(200)
 

@@ -35,7 +35,6 @@ class KeyController {
 
             // Password data, please check prisma in Password Model in schema
             for (let i = 0; i < allUser.password.length; i++) {
-
               type VaultData = z.infer<typeof PasswordSchema>
               type CurrentDecryptedPassData = Omit<VaultData, 'id' | 'createdAt' | 'updatedAt'>
 
@@ -44,7 +43,7 @@ class KeyController {
                 username: decrypt(allUser.password[i].username, oldKey),
                 password: decrypt(allUser.password[i].password, oldKey),
                 url: allUser.password[i].url ? decrypt(allUser.password[i].url!, oldKey) : '',
-                note: allUser.password[i].note ? decrypt(allUser.password[i].note!, oldKey) : ''
+                note: allUser.password[i].note ? decrypt(allUser.password[i].note!, oldKey) : '',
               }
 
               const updatedEcryptedPassData: CurrentDecryptedPassData = {

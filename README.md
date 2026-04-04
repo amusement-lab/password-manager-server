@@ -27,8 +27,8 @@ docker-compose up -d
 3. Setup your `.env`. If you use docker, the settings are in accordance with the config in `docker-compose.yml`
 
 ```js
-cp .env.example .env
-cp .env.test.example .env.test // for test environment
+cp.env.example.env
+cp.env.test.example.env.test // for test environment
 ```
 
 4. Setup the prisma ORM
