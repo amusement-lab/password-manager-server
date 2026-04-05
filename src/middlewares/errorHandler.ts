@@ -9,9 +9,6 @@ function errorHandling(
   res: Response,
   __: NextFunction
 ) {
-  // This console.log, for error handler purpose
-  console.log(err)
-
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === 'P2002') {
       res.status(400).json({
