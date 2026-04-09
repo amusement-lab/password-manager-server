@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { LoggedUser } from '../entities/user.entity'
+import { LoggedUser } from '../entities/user.entity.ts'
 
 const secret = process.env.JWT_SECRET as string
 

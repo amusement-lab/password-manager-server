@@ -1,13 +1,13 @@
 import { NextFunction, Response } from 'express'
-import { prisma } from '../prisma'
+import { prisma } from '../prisma/index.ts'
 
-import { RequestWithLoggedUser } from '../entities/user.entity'
+import { RequestWithLoggedUser } from '../entities/user.entity.ts'
 import {
   GetPasswordsSchema,
   PasswordSchema,
   UpsertPasswordSchema,
-} from '../entities/password.entity'
-import { encrypt, decrypt } from '../helpers/ciphers'
+} from '../entities/password.entity.ts'
+import { encrypt, decrypt } from '../helpers/ciphers.ts'
 
 class Password {
   static async getPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
@@ -41,7 +41,7 @@ class Password {
 
   static async detailPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
+      const id = req.params.id as string
       const key = req.loggedUser!.hashedKey
 
       const data = await prisma.password.findUnique({
@@ -98,7 +98,7 @@ class Password {
   static async editPassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
       const { title, password, username, url, note } = UpsertPasswordSchema.parse(req.body)
-      const { id } = req.params
+      const id = req.params.id as string
       const key = req.loggedUser!.hashedKey
 
       await prisma.password.update({
@@ -120,7 +120,7 @@ class Password {
 
   static async deletePassword(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
+      const id = req.params.id as string
 
       await prisma.password.delete({
         where: { id },

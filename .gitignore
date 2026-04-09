@@ -4,3 +4,4 @@ build
 node_modules
 tmp
 /src/prisma/generated
+tsconfig.tsbuildinfo

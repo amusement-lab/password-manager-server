@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
-import { Prisma } from '../prisma/generated/client'
-import { ErrorHandler } from '../entities/error.entity'
+import { Prisma } from '../prisma/generated/client.ts'
+import { ErrorHandler } from '../entities/error.entity.ts'
 import { ZodError } from 'zod'
 
 function errorHandling(

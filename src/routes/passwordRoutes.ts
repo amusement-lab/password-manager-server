@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import PasswordController from '../controllers/passwordController'
-import { authentication, passwordAuthorization } from '../middlewares/auth'
+import PasswordController from '../controllers/passwordController.ts'
+import { authentication, passwordAuthorization } from '../middlewares/auth.ts'
 
 const router: Router = Router()
 

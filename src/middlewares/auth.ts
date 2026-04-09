@@ -1,8 +1,8 @@
 import { NextFunction, Response } from 'express'
-import { prisma } from '../prisma'
+import { prisma } from '../prisma/index.ts'
 
-import { decodeToken } from '../helpers/jwt'
-import { RequestWithLoggedUser, LoggedUser } from '../entities/user.entity'
+import { decodeToken } from '../helpers/jwt.ts'
+import { RequestWithLoggedUser, LoggedUser } from '../entities/user.entity.ts'
 
 function authentication(req: RequestWithLoggedUser, res: Response, next: NextFunction) {
   if (req.headers.authorization) {
@@ -21,7 +21,7 @@ async function passwordAuthorization(
   next: NextFunction
 ) {
   if (req.loggedUser) {
-    const passID = req.params.id
+    const passID = req.params.id as string
     const user = req.loggedUser
 
     const findPass = await prisma.password.findUnique({

@@ -1,7 +1,7 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
 import { z } from 'zod'
 
-import { registry } from '../helpers/zod'
+import { registry } from '../helpers/zod.ts'
 
 extendZodWithOpenApi(z)
 

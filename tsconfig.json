@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2023",
-    "module": "ESNext",
+    "target": "es2023",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "allowJs": true,
     "strict": true,
     "esModuleInterop": true,
@@ -12,7 +13,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./build",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

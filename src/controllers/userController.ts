@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { prisma } from '../prisma'
+import { prisma } from '../prisma/index.ts'
 
-import { generateHash, verifyHash, generateSimpleHash } from '../helpers/hash'
-import { generateToken } from '../helpers/jwt'
-import { LoggedUser, LoginUserSchema, UserSchema } from '../entities/user.entity'
+import { generateHash, verifyHash, generateSimpleHash } from '../helpers/hash.ts'
+import { generateToken } from '../helpers/jwt.ts'
+import { LoggedUser, LoginUserSchema, UserSchema } from '../entities/user.entity.ts'
 
 async function getUser(_: Request, res: Response) {
   const usersData = await prisma.user.findMany()

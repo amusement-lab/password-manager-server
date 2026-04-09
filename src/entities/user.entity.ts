@@ -2,7 +2,7 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
 import { Request } from 'express'
 import { z } from 'zod'
 
-import { registry } from '../helpers/zod'
+import { registry } from '../helpers/zod.ts'
 
 export interface LoggedUser {
   username: string

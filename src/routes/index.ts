@@ -2,9 +2,9 @@ import { Router, Request, Response } from 'express'
 import swaggerUi from 'swagger-ui-express'
 import { OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi'
 
-import passwordRoute from './passwordRoutes'
-import userRoute from './userRoutes'
-import { registry } from '../helpers/zod'
+import passwordRoute from './passwordRoutes.ts'
+import userRoute from './userRoutes.ts'
+import { registry } from '../helpers/zod.ts'
 
 const router: Router = Router()
 

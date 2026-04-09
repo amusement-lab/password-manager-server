@@ -1,11 +1,11 @@
 import { NextFunction, Response } from 'express'
-import { prisma } from '../prisma'
+import { prisma } from '../prisma/index.ts'
 import { z } from 'zod'
 
-import { ChangeKeySchema, RequestWithLoggedUser } from '../entities/user.entity'
-import { encrypt, decrypt } from '../helpers/ciphers'
-import { generateHash, generateSimpleHash, verifyHash } from '../helpers/hash'
-import { PasswordSchema } from '../entities/password.entity'
+import { ChangeKeySchema, RequestWithLoggedUser } from '../entities/user.entity.ts'
+import { encrypt, decrypt } from '../helpers/ciphers.ts'
+import { generateHash, generateSimpleHash, verifyHash } from '../helpers/hash.ts'
+import { PasswordSchema } from '../entities/password.entity.ts'
 
 class KeyController {
   static async changeKey(req: RequestWithLoggedUser, res: Response, next: NextFunction) {

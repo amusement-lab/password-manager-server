@@ -3,8 +3,8 @@ import express, { Express } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 
-import router from './routes'
-import errorHandling from './middlewares/errorHandler'
+import router from './routes/index.ts'
+import errorHandling from './middlewares/errorHandler.ts'
 
 const app: Express = express()
 const port = Number(process.env.PORT) || 8080
