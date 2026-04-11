@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import superagent from 'superagent'
+import superagent, { type Request, type Response } from 'superagent'
 
 const url = process.env.API_URL!
 
@@ -10,6 +10,16 @@ const testUser = {
 }
 let token = ''
 let testPassData: any[] = []
+
+async function getErrorResponse(request: Request) {
+  const response = await request.ok(() => true)
+
+  if (response.statusCode < 400) {
+    throw new Error('Expected request to fail')
+  }
+
+  return response as Response
+}
 
 describe('Testing password CRUD', () => {
   it('POST /register', async () => {
@@ -318,4 +328,265 @@ describe('Testing password CRUD', () => {
   })
 })
 
-// TODO: add negative testing for password flow
+describe('Testing negative password CRUD', () => {
+  it('POST /password should reject missing auth', async () => {
+    const res = await getErrorResponse(
+      superagent.post(`${url}/password`).send({
+        title: 'no-auth-web',
+        username: 'no-auth-user',
+        password: '123456789abc',
+        url: 'www.no-auth-web.com',
+        note: 'missing auth',
+      })
+    )
+
+    expect(res.statusCode).to.equal(400)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Invalid auth')
+  })
+
+  it('GET /password should reject missing auth', async () => {
+    const res = await getErrorResponse(superagent.get(`${url}/password`))
+
+    expect(res.statusCode).to.equal(400)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Invalid auth')
+  })
+
+  it('GET /password/:id should reject missing auth', async () => {
+    const res = await getErrorResponse(superagent.get(`${url}/password/${testPassData[1].id}`))
+
+    expect(res.statusCode).to.equal(400)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Invalid auth')
+  })
+
+  it('PUT /password/:id should reject missing auth', async () => {
+    const res = await getErrorResponse(
+      superagent.put(`${url}/password/${testPassData[1].id}`).send({
+        title: 'web2-edit-without-auth',
+        username: 'user-without-auth',
+        password: '123456789abcdef',
+        url: 'www.no-auth-update.com',
+        note: 'missing auth',
+      })
+    )
+
+    expect(res.statusCode).to.equal(400)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Invalid auth')
+  })
+
+  it('DELETE /password/:id should reject missing auth', async () => {
+    const res = await getErrorResponse(superagent.delete(`${url}/password/${testPassData[1].id}`))
+
+    expect(res.statusCode).to.equal(400)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Invalid auth')
+  })
+
+  it('POST /password should reject invalid payload', async () => {
+    const res = await getErrorResponse(
+      superagent
+        .post(`${url}/password`)
+        .send({
+          title: 'invalid-payload-web',
+          username: 'invalid-payload-user',
+          password: 123456789,
+          url: 'www.invalid-payload.com',
+          note: 'invalid payload',
+        })
+        .auth(token, { type: 'bearer' })
+    )
+
+    expect(res.statusCode).to.equal(400)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal(
+      'Validation error, please send the data in the correct data type'
+    )
+  })
+
+  it('PUT /password/:id should reject invalid payload', async () => {
+    const res = await getErrorResponse(
+      superagent
+        .put(`${url}/password/${testPassData[1].id}`)
+        .send({
+          title: 'invalid-update-web',
+          username: 'invalid-update-user',
+          url: 'www.invalid-update.com',
+          note: 'invalid payload',
+        })
+        .auth(token, { type: 'bearer' })
+    )
+
+    expect(res.statusCode).to.equal(400)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal(
+      'Validation error, please send the data in the correct data type'
+    )
+  })
+
+  it('GET /password/:id should reject unknown id', async () => {
+    const res = await getErrorResponse(
+      superagent.get(`${url}/password/non-existent-password-id`).auth(token, { type: 'bearer' })
+    )
+
+    expect(res.statusCode).to.equal(404)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Data not found')
+  })
+
+  it('PUT /password/:id should reject unknown id', async () => {
+    const res = await getErrorResponse(
+      superagent
+        .put(`${url}/password/non-existent-password-id`)
+        .send({
+          title: 'missing-web',
+          username: 'missing-user',
+          password: '123456789missing',
+          url: 'www.missing.com',
+          note: 'unknown id',
+        })
+        .auth(token, { type: 'bearer' })
+    )
+
+    expect(res.statusCode).to.equal(404)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Data not found')
+  })
+
+  it('DELETE /password/:id should reject unknown id', async () => {
+    const res = await getErrorResponse(
+      superagent
+        .delete(`${url}/password/non-existent-password-id`)
+        .auth(token, { type: 'bearer' })
+    )
+
+    expect(res.statusCode).to.equal(404)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Data not found')
+  })
+
+  //TODO: This test is to ensure that the server properly handles malformed bearer token and does not crash or return sensitive information in the error response
+  it('GET /password should reject malformed bearer token', async () => {
+    const res = await getErrorResponse(
+      superagent.get(`${url}/password`).set('Authorization', 'Bearer invalid-token')
+    )
+
+    expect(res.statusCode).to.equal(500)
+
+    expect(res.body).to.be.an('object')
+  })
+
+  it('GET /password/:id should reject access from another user', async () => {
+    const anotherUser = {
+      username: 'user3@mail.com',
+      key: '123456789',
+      name: 'Another User',
+    }
+
+    const registerRes = await superagent.post(`${url}/register`).send(anotherUser)
+
+    expect(registerRes.statusCode).to.equal(201)
+
+    const loginRes = await superagent.post(`${url}/login`).send({
+      username: anotherUser.username,
+      key: anotherUser.key,
+    })
+
+    expect(loginRes.statusCode).to.equal(200)
+
+    const otherToken = loginRes.body.token as string
+
+    const res = await getErrorResponse(
+      superagent.get(`${url}/password/${testPassData[1].id}`).auth(otherToken, { type: 'bearer' })
+    )
+
+    expect(res.statusCode).to.equal(403)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Forbidden access')
+  })
+})
+
+describe('Testing password edge cases', () => {
+  it('POST /password should allow duplicate title for the same user', async () => {
+    const res = await superagent
+      .post(`${url}/password`)
+      .send({
+        title: 'web2',
+        username: 'duplicate-title-user',
+        password: '123456789duplicate',
+        url: 'www.duplicate-title.com',
+        note: 'duplicate title is allowed',
+      })
+      .auth(token, { type: 'bearer' })
+
+    expect(res.statusCode).to.equal(200)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Password added successfully')
+
+    const listRes = await superagent.get(`${url}/password`).auth(token, { type: 'bearer' })
+
+    expect(listRes.statusCode).to.equal(200)
+
+    const duplicateTitleData = listRes.body.filter((item: any) => item.title === 'web2')
+
+    expect(duplicateTitleData).to.be.an('array')
+    expect(duplicateTitleData.length).to.equal(2)
+  })
+
+  it('PUT /password/:id should allow clearing optional url and note fields', async () => {
+    const res = await superagent
+      .put(`${url}/password/${testPassData[1].id}`)
+      .send({
+        title: 'web2',
+        username: 'myUser2',
+        password: '123456789def',
+        url: '',
+        note: '',
+      })
+      .auth(token, { type: 'bearer' })
+
+    expect(res.statusCode).to.equal(200)
+
+    expect(res.body).to.be.an('object')
+    expect(res.body).to.have.property('message')
+    expect(res.body.message).to.equal('Password updated successfully')
+
+    const detailRes = await superagent
+      .get(`${url}/password/${testPassData[1].id}`)
+      .auth(token, { type: 'bearer' })
+
+    expect(detailRes.statusCode).to.equal(200)
+
+    expect(detailRes.body).to.be.an('object')
+    expect(detailRes.body).to.have.property('url')
+    expect(detailRes.body.url).to.equal('')
+    expect(detailRes.body).to.have.property('note')
+    expect(detailRes.body.note).to.equal('')
+  })
+})
