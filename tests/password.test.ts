@@ -475,9 +475,7 @@ describe('Testing negative password CRUD', () => {
 
   it('DELETE /password/:id should reject unknown id', async () => {
     const res = await getErrorResponse(
-      superagent
-        .delete(`${url}/password/non-existent-password-id`)
-        .auth(token, { type: 'bearer' })
+      superagent.delete(`${url}/password/non-existent-password-id`).auth(token, { type: 'bearer' })
     )
 
     expect(res.statusCode).to.equal(404)

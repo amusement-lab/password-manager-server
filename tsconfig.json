@@ -15,9 +15,7 @@
     "outDir": "./build",
     "rootDir": "./src",
     "allowImportingTsExtensions": true,
-    "noEmit": true,
+    "noEmit": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
